@@ -96,9 +96,29 @@ export const REFERRAL_SPLIT_FULL: readonly bigint[] = [
  */
 export const REFERRER_DEAD_DEFAULT: Address = '0x000000000000000000000000000000000000dEaD';
 
-export const REFERRER_ADDRESS: Address =
-  ((import.meta.env.VITE_REFERRER_ADDRESS as string | undefined)?.trim() as Address | undefined) ||
-  REFERRER_DEAD_DEFAULT;
+function resolveOperatorReferrer(): Address {
+  const raw = (import.meta.env.VITE_REFERRER_ADDRESS as string | undefined)?.trim();
+  const isValid =
+    !!raw && /^0x[0-9a-fA-F]{40}$/.test(raw) && raw.toLowerCase() !== REFERRER_DEAD_DEFAULT.toLowerCase();
+  if (isValid) return raw as Address;
+  // Production: refuse to start rather than ship a site that earns the operator nothing
+  // (the protocol also does not credit a self-referral, so a missing wallet earns zero).
+  if (import.meta.env.PROD) {
+    throw new Error(
+      'VITE_REFERRER_ADDRESS is unset or invalid. Set it to your Base wallet ' +
+        '(0x + 40 hex, not the dead address) so this site earns referral fees. ' +
+        'See the README "How referral fees work" section.',
+    );
+  }
+  // Dev only: warn but keep running on the dead address so a fresh clone still boots.
+  console.warn(
+    '[megapot] VITE_REFERRER_ADDRESS not set — using the dead-address fallback. ' +
+      'Fees earned on it are unrecoverable; set your wallet before deploying.',
+  );
+  return REFERRER_DEAD_DEFAULT;
+}
+
+export const REFERRER_ADDRESS: Address = resolveOperatorReferrer();
 
 /**
  * Builder-attribution referrer. Receives the builder's referral share on every
