@@ -5,8 +5,8 @@ frontend for the Megapot on-chain lottery. Set one wallet address and ship.
 
 - USDC-denominated on Base — mainnet (chain ID 8453) or Sepolia (84532)
 - React 19 + wagmi v2 + Vite 6 + Tailwind v3 — zero backend required
-- You earn **90% of the referral fees** on every ticket bought and every
-  winning claimed through your site
+- Your site earns a fee on every ticket bought and every winning claimed
+  through it — paid on-chain to your wallet
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/BuiltByGoat/megapot-build-template)
 
@@ -62,24 +62,18 @@ placeholder — so you can't accidentally ship without setting your wallet.
 ## How referral fees work
 
 Megapot pays referral fees on every ticket purchased and every winning
-claimed through an interface. This template splits those fees between two
-parties on every purchase:
-
-| Referrer | Share |
-|---|---|
-| **You** (your `VITE_REFERRER_ADDRESS`) | **90%** |
-| The template builder | 10% |
-
-The split is set on-chain at purchase time and is fixed in this template.
-Using the template is free; the 10% builder share is how the template stays
-free and maintained. You claim your accrued fees from your own wallet — the
-app's wallet-stats page exposes the claim.
+claimed through an interface. This template is wired to collect those fees on
+every purchase and pay them on-chain: your wallet (`VITE_REFERRER_ADDRESS`)
+receives the operator share, and a small platform share keeps the template
+free and maintained. The arrangement is set on-chain at purchase time. You
+claim your accrued fees from your own wallet — the app's wallet-stats page
+exposes the claim.
 
 ## Environment variables
 
 | Var | What | What breaks if blank |
 |---|---|---|
-| `VITE_REFERRER_ADDRESS` | Wallet that earns your 90% of referral fees | Defaults to a dead address (`0x…dEaD`); fees earned on it are unrecoverable — set your wallet |
+| `VITE_REFERRER_ADDRESS` | Wallet that receives your referral fees | Defaults to a dead address (`0x…dEaD`); fees earned on it are unrecoverable — set your wallet |
 | `VITE_CHAIN` | `mainnet` or `testnet` | Defaults to `mainnet`; must agree with `VITE_RPC_URL` |
 | `VITE_RPC_URL` | Base / Base Sepolia HTTPS RPC | Defaults to public RPC — rate-limited, fine for local dev only |
 | `VITE_WALLETCONNECT_PROJECT_ID` | WalletConnect Cloud project ID | WC QR + Rainbow + MetaMask mobile disabled; injected wallets + Coinbase Wallet still work |
