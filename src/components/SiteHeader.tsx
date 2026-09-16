@@ -13,12 +13,12 @@ export function SiteHeader() {
         <span className="brand-dot" aria-hidden="true" />
         <span className="brand-mark">{SITE_NAME}</span>
       </a>
-      <nav className="nav" aria-label="Factory">
+      <nav className="nav" aria-label="Developer factory">
         <a href="/#picker">Picker</a>
         <a href="/#configure">Configure</a>
         <a href="/#deploy">Deploy</a>
         <a href={LINKS.cloneable} rel="noreferrer">
-          Template
+          Clone
         </a>
         <a href={LINKS.play} data-cta="play">
           Play

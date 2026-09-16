@@ -1,7 +1,8 @@
 /**
  * ---
- * @customize  megapot.build landing. Picker → configure → deploy IA.
- *             Public CTAs use /go or official origins — never a referral
+ * @customize  megapot.build landing. Developer factory: picker →
+ *             configure → deploy. Clones ship a player site. Public
+ *             CTAs use /go or official origins — never a referral
  *             code or wallet. Cribble tokens only.
  * ---
  */
@@ -14,36 +15,94 @@ export function FactoryLanding() {
     <main id="main">
       <FactoryJsonLd />
       <section className="hero wrap" aria-labelledby="hero-title">
-        <p className="kicker">Megapot Network · factory</p>
+        <p className="kicker">Megapot Network · developer factory</p>
         <h1 id="hero-title">
-          Pick the Network site. Configure privately. <em>Deploy.</em>
+          Clone the player site. Configure privately. <em>Deploy.</em>
         </h1>
         <p className="lede">
-          megapot.build is the factory for{' '}
+          megapot.build is for <strong>builders</strong>, not players. Clone{' '}
           <a href={LINKS.cloneable} rel="noreferrer">
             BuiltByGoat/network-site-template
           </a>
-          . One cloneable. Bind <code>SITE_HOSTNAME</code> and <code>MEGAPOT_PLAY_DESTINATION</code>{' '}
-          on the host. Ship to Cloudflare Pages. This hub does not ship old HTML kits.
+          , bind <em>your</em> play destination in private host env, and ship a front door whose
+          public copy sells play — not a builder ad. Codes, wallets, and tokens never appear on the
+          page.
         </p>
         <div className="cta-row">
-          <a className="btn btn-green" href="#picker">
-            Start with Picker
-          </a>
-          <a className="btn btn-ghost" href={LINKS.cloneable} rel="noreferrer">
+          <a className="btn btn-green" href={LINKS.cloneable} rel="noreferrer">
             Clone network-site-template
+          </a>
+          <a className="btn btn-ghost" href="#picker">
+            Start with Picker
           </a>
           <a className="btn btn-ember" href={LINKS.play} data-cta="play">
             Play on Megapot
           </a>
         </div>
+        <ul className="stat-row" aria-label="Two-sided funnel">
+          <li className="stat">
+            <strong>This factory</strong>
+            <span>Developers land here. Clone the template. Factory Play is first-level /go.</span>
+          </li>
+          <li className="stat">
+            <strong>Your clone</strong>
+            <span>A player marketing shell. Public copy sells play, not a builder pitch.</span>
+          </li>
+          <li className="stat">
+            <strong>Private /go</strong>
+            <span>
+              Players hit Play → your <code>MEGAPOT_PLAY_DESTINATION</code>. Attribution stays
+              off-page.
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <section className="wrap" aria-labelledby="funnel-title">
+        <p className="kicker">Two-sided funnel</p>
+        <h2 id="funnel-title">Developers here. Players on the site you ship.</h2>
+        <p className="intro">
+          You visit this factory, clone the player shell, and bind your referral destination on the
+          host. Players never see this page. They see <em>your</em> site, tap Play, and land on
+          Megapot through Function-win <code>/go</code>.
+        </p>
+        <div className="grid-3">
+          <article className="card">
+            <span className="chip chip-ice">01 · Factory</span>
+            <h3>Builders, not a player landing</h3>
+            <p>
+              This hub explains picker → configure → deploy. It is not the homepage clones publish.
+              Factory Play is our first-level hop.
+            </p>
+          </article>
+          <article className="card">
+            <span className="chip chip-green">02 · Clone</span>
+            <h3>Ship a player site</h3>
+            <p>
+              <a href={LINKS.cloneable} rel="noreferrer">
+                network-site-template
+              </a>{' '}
+              is the player marketing shell. Its public copy should sell play — not advertise
+              builders.
+            </p>
+          </article>
+          <article className="card">
+            <span className="chip chip-ember">03 · Attribution</span>
+            <h3>Env names, never values</h3>
+            <p>
+              Put your referral destination in <code>MEGAPOT_PLAY_DESTINATION</code>. View-source
+              shows <code>/go</code>. No codes or wallets on public pages.
+            </p>
+          </article>
+        </div>
       </section>
 
       <section className="wrap" id="picker" aria-labelledby="picker-title">
         <p className="kicker">01 · Picker</p>
-        <h2 id="picker-title">The cloneable is network-site-template</h2>
+        <h2 id="picker-title">Clone the player site: network-site-template</h2>
         <p className="intro">
-          There is no kit picker. Clone{' '}
+          The cloneable is a <strong>player</strong> marketing shell, not a developer homepage.
+          Clone{' '}
           <a href={LINKS.cloneable} rel="noreferrer">
             BuiltByGoat/network-site-template
           </a>{' '}
@@ -65,8 +124,9 @@ export function FactoryLanding() {
                 The canonical squash is on <code>main</code>. Do not start from deprecated kits.
               </li>
               <li>
-                <b>Preview before you bind</b>
-                The Pages demo is the cribble-first shell you will configure.
+                <b>Preview the player front door</b>
+                The Pages demo is the cribble-first shell players will see. You configure it
+                privately after clone.
               </li>
             </ol>
             <div className="cta-row">
@@ -91,13 +151,13 @@ export function FactoryLanding() {
               <span>network-site-template.pages.dev</span>
             </div>
             <div className="preview-body">
-              <div className="ghost-kicker">Canonical cloneable</div>
-              <h3>Ship a jackpot front door.</h3>
+              <div className="ghost-kicker">Player site you ship</div>
+              <h3>Play on Megapot.</h3>
               <p>
-                Play hops through a private /go. Dashboard and latest results stay public,
-                UTM-stamped, and empty of attribution secrets.
+                Public copy sells play. Play hops through a private /go. Dashboard and latest
+                results stay public look-ups — empty of codes and wallets.
               </p>
-              <span className="preview-cta">Preview the template →</span>
+              <span className="preview-cta">Preview the player shell →</span>
             </div>
           </a>
         </div>
@@ -105,12 +165,14 @@ export function FactoryLanding() {
 
       <section className="wrap" id="configure" aria-labelledby="configure-title">
         <p className="kicker">02 · Configure</p>
-        <h2 id="configure-title">Env names, never values</h2>
+        <h2 id="configure-title">Your referral lives in private env</h2>
         <p className="intro">
-          HTML outbound UTMs require <code>SITE_HOSTNAME</code> at build. The factory Pages project{' '}
-          <code>{PAGES_PROJECT_NAME}</code> must set <code>SITE_HOSTNAME={FACTORY_HOSTNAME}</code>{' '}
-          so dashboard / results / hub hrefs and <code>/go</code> Location match. Clones set their
-          own deploy host. Values stay off the page.
+          Bind <code>MEGAPOT_PLAY_DESTINATION</code> on the host — that is <em>your</em> play
+          destination, not a public string. HTML outbound UTMs require <code>SITE_HOSTNAME</code> at
+          build. The factory Pages project <code>{PAGES_PROJECT_NAME}</code> must set{' '}
+          <code>SITE_HOSTNAME={FACTORY_HOSTNAME}</code> so dashboard / results / hub hrefs and{' '}
+          <code>/go</code> Location match. Clones set their own deploy host. Values stay off the
+          page.
         </p>
         <div className="card">
           <table className="env-table">
@@ -124,21 +186,23 @@ export function FactoryLanding() {
             <tbody>
               <tr>
                 <td>
+                  <code>MEGAPOT_PLAY_DESTINATION</code>
+                </td>
+                <td>Pages Function</td>
+                <td>
+                  Your clone&apos;s Play destination — the absolute URL <code>/go</code> redirects
+                  to. Bind it on Cloudflare Pages. Empty → public Megapot origin. Never print the
+                  value in HTML.
+                </td>
+              </tr>
+              <tr>
+                <td>
                   <code>SITE_HOSTNAME</code>
                 </td>
                 <td>Pages + build</td>
                 <td>
                   Required for HTML UTMs. Factory: <code>{FACTORY_HOSTNAME}</code>. Alias:{' '}
                   <code>MEGAPOT_SITE_HOSTNAME</code>.
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <code>MEGAPOT_PLAY_DESTINATION</code>
-                </td>
-                <td>Pages Function</td>
-                <td>
-                  Absolute URL <code>/go</code> redirects to. Empty → public Megapot origin.
                 </td>
               </tr>
               <tr>
@@ -171,7 +235,8 @@ export function FactoryLanding() {
         <div className="privacy" style={{ marginTop: 28 }}>
           <p>
             No referral codes, wallet addresses, or API tokens in landing copy, footers, README
-            badges, or cloneable markup. Hostname UTMs are campaign params, not secrets.
+            badges, or cloneable markup. Hostname UTMs are campaign params, not secrets. Document
+            env <em>names</em> only.
           </p>
         </div>
       </section>
@@ -212,6 +277,7 @@ export function FactoryLanding() {
             <h3>View-source /go</h3>
             <p>
               Public markup links to <code>/go</code>. The destination never appears in HTML.
+              Players never see your referral string.
             </p>
           </article>
         </div>
@@ -219,15 +285,19 @@ export function FactoryLanding() {
 
       <section className="wrap" aria-labelledby="flywheel-title">
         <p className="kicker">Doors</p>
-        <h2 id="flywheel-title">Play. Build. Ship another door.</h2>
+        <h2 id="flywheel-title">Factory Play is first-level. Your clone&apos;s Play is yours.</h2>
         <p className="intro">
-          Play is intent. Dashboard and results stay public look-ups — not a signup flow.
+          Play is intent. This factory&apos;s Play button is our <code>/go</code>. After you ship,
+          players use yours. Dashboard and results stay public look-ups — not a signup flow.
         </p>
         <div className="cta-row">
+          <a className="btn btn-green" href={LINKS.cloneable} rel="noreferrer">
+            Clone network-site-template
+          </a>
           <a className="btn btn-ember" href={LINKS.play} data-cta="play">
             Play on Megapot
           </a>
-          <a className="btn btn-green" href={LINKS.dashboard} data-cta="dashboard" rel="noreferrer">
+          <a className="btn btn-ghost" href={LINKS.dashboard} data-cta="dashboard" rel="noreferrer">
             Dashboard
           </a>
           <a className="btn btn-ghost" href={LINKS.results} data-cta="results" rel="noreferrer">

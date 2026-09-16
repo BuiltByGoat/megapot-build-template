@@ -1,7 +1,8 @@
 /**
  * ---
  * @customize  Public-safe site labels only. No attribution values live here.
- *             Title is the factory hub equivalent of Play on Megapot | {SITE_NAME}.
+ *             Factory title is Build on Megapot | {SITE_NAME}.
+ *             Clones use Play on Megapot | {SITE_NAME} — player site, not this hub.
  * ---
  */
 

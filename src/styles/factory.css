@@ -476,10 +476,18 @@ section .intro {
   color: var(--crib-ice);
 }
 
+.lede strong,
+.intro strong {
+  color: var(--crib-ink);
+  font-weight: 650;
+}
+
 .lede code,
 .intro code,
 .template-copy code,
-.privacy code {
+.privacy code,
+.stat code,
+.card code {
   font-family: var(--crib-mono);
   font-size: 0.86em;
   color: var(--crib-ice);
