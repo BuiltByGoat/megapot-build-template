@@ -21,10 +21,10 @@ const outRoot = join(root, 'out');
 const findings = [];
 
 const dnsInstruction = [
-  /\bA\s+record\b/i,
+  /\bA\s+record\b/,
   /\bAAAA\s+record\b/i,
   /\bnameserver/i,
-  /\bNS\s+record\b/i,
+  /\bNS\s+record\b/,
   /\bpoint (?:your |the )?DNS\b/i,
   /\bapex is live\b/i,
   /\bnow live at https:\/\/megapot\.build\b/i,
