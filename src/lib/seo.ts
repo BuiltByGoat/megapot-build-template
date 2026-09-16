@@ -13,7 +13,7 @@ import { FACTORY_HOSTNAME } from './utms.ts';
 export const FACTORY_CANONICAL_ORIGIN = `https://${FACTORY_HOSTNAME}`;
 
 export const FACTORY_DESCRIPTION =
-  'Developer factory for BuiltByGoat/network-site-template. You ship a player site; attribution stays private. Picker → configure → deploy. Bind SITE_HOSTNAME=megapot.build so HTML and /go Location both stamp utm_source=megapot.build.';
+  'Developer factory for BuiltByGoat/network-site-template. You ship a player site; Play hops through /go. Picker → configure → deploy. Bind SITE_HOSTNAME=megapot.build so HTML and /go Location both stamp utm_source=megapot.build.';
 
 export const IA_STEPS = [
   { id: 'picker', label: 'Picker', href: '/#picker' },

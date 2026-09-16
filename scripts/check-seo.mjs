@@ -6,6 +6,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 import { NETWORK_HUB_ORIGIN, RESULTS_ORIGIN } from '../src/lib/origin.ts';
+import { lectureHits } from '../src/lib/public-copy.ts';
 import {
   FACTORY_CANONICAL_ORIGIN,
   FACTORY_DESCRIPTION,
@@ -97,7 +98,7 @@ if (!statSync(outRoot, { throwIfNoEntry: false })?.isDirectory()) {
     findings.push('Landing must say clones ship a player site');
   }
   if (!home.includes('MEGAPOT_PLAY_DESTINATION')) {
-    findings.push('Landing must name the private play destination env');
+    findings.push('Landing must name the play destination env');
   }
   if (home.includes('utm_source=megapot.build') === false) {
     findings.push('HTML outbound hrefs must stamp utm_source=megapot.build');
@@ -127,6 +128,15 @@ if (!statSync(outRoot, { throwIfNoEntry: false })?.isDirectory()) {
   const disclaimer = readFileSync(join(outRoot, 'disclaimer/index.html'), 'utf8');
   if (!/rel="canonical" href="https:\/\/megapot\.build\/disclaimer\/?"/.test(disclaimer)) {
     findings.push('Disclaimer must canonical https://megapot.build/disclaimer/');
+  }
+
+  for (const page of [
+    { name: 'landing', html: home },
+    { name: 'disclaimer', html: disclaimer },
+  ]) {
+    for (const hit of lectureHits(page.html)) {
+      findings.push(`${page.name}: internal privacy lecture (${hit})`);
+    }
   }
 }
 

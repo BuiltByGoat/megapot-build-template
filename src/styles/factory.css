@@ -452,7 +452,7 @@ section .intro {
   color: var(--crib-ice);
 }
 
-.privacy {
+.callout {
   border-left: 3px solid var(--crib-ember);
   padding: 4px 0 4px 16px;
 }
@@ -485,7 +485,7 @@ section .intro {
 .lede code,
 .intro code,
 .template-copy code,
-.privacy code,
+.callout code,
 .stat code,
 .card code {
   font-family: var(--crib-mono);

@@ -1,7 +1,7 @@
 /**
  * ---
- * @customize  Public footer. Keep attribution and wallets out of this file.
- *             Hub → megapot.network. Latest results → megapotresults.com.
+ * @customize  Public footer. Hub → megapot.network. Latest results →
+ *             megapotresults.com.
  * ---
  */
 import { LINKS } from '@/lib/links';
@@ -20,8 +20,7 @@ export function SiteFooter() {
         .
       </p>
       <p>
-        18+ only. A lottery is entertainment, not income — most tickets lose. Attribution belongs in
-        private host env, never in this footer.{' '}
+        18+ only. A lottery is entertainment, not income — most tickets lose.{' '}
         <a href={LINKS.results} data-cta="results" rel="noreferrer">
           Latest results
         </a>
