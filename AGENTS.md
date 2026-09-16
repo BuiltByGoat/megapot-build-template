@@ -1,9 +1,11 @@
 # AGENTS guide
 
-This repo is **megapot.build** — the Megapot Network site factory / explainer.
+This repo is **megapot.build** — the **developer** factory / explainer.
 Builders clone [BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
-(`main`), not this repo. IA: picker → configure → deploy. Cribble only.
-Protocol skills still live at [llms.megapot.io](https://llms.megapot.io).
+(`main`), not this repo. Clones ship a **player** marketing shell; public
+copy sells play; attribution stays in private env. IA: picker → configure →
+deploy. Cribble only. Protocol skills still live at
+[llms.megapot.io](https://llms.megapot.io).
 
 ## Privacy
 

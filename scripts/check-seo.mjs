@@ -87,6 +87,18 @@ if (!statSync(outRoot, { throwIfNoEntry: false })?.isDirectory()) {
   if (!home.includes(new URL(RESULTS_ORIGIN).hostname)) {
     findings.push('Landing must name latest results megapotresults.com');
   }
+  if (!home.includes('https://github.com/BuiltByGoat/network-site-template')) {
+    findings.push('Landing must link the cloneable GitHub repo');
+  }
+  if (!/developer factory/i.test(home)) {
+    findings.push('Landing must pitch megapot.build as a developer factory');
+  }
+  if (!/player (?:site|marketing shell|front door)/i.test(home)) {
+    findings.push('Landing must say clones ship a player site');
+  }
+  if (!home.includes('MEGAPOT_PLAY_DESTINATION')) {
+    findings.push('Landing must name the private play destination env');
+  }
   if (home.includes('utm_source=megapot.build') === false) {
     findings.push('HTML outbound hrefs must stamp utm_source=megapot.build');
   }

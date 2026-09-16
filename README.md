@@ -1,17 +1,19 @@
 # megapot.build
 
-Factory / explainer for the **Megapot Network** cloneable:
+**Developer** factory / explainer for the Megapot Network cloneable:
 [BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
 (`main`).
 
-This repo is the builder hub. It is **not** the site you clone.
+This repo is the builder hub. It is **not** the site you clone. Clones ship a
+**player** marketing shell — public copy sells play; your referral destination
+stays in private host env (`MEGAPOT_PLAY_DESTINATION`).
 
-Live template preview: [network-site-template.pages.dev](https://network-site-template.pages.dev).
+Live player-shell preview: [network-site-template.pages.dev](https://network-site-template.pages.dev).
 
 ## IA
 
-1. **Picker** — clone `network-site-template`
-2. **Configure** — bind `SITE_HOSTNAME` + `MEGAPOT_PLAY_DESTINATION` (private)
+1. **Picker** — clone `network-site-template` (player site, not a builder ad)
+2. **Configure** — bind `SITE_HOSTNAME` + `MEGAPOT_PLAY_DESTINATION` (your private referral destination)
 3. **Deploy** — Cloudflare Pages `out/` + Function-win `/go` (302 only)
 
 Cribble tokens only (`#000` / `#02fe01` / `#ff6a1a` / `#9bdcf5`).
@@ -107,7 +109,8 @@ treat an apex hostname as live.
 
 To ship a **player site**, clone
 [network-site-template](https://github.com/BuiltByGoat/network-site-template)
-instead of this factory.
+instead of this factory. The clone's public homepage should sell play, not
+advertise builders. Bind the referral destination in private env.
 
 ## Customize
 

@@ -19,6 +19,8 @@ describe('factory SEO / IA', () => {
   it('keeps a builder title and picker → configure → deploy IA', () => {
     assert.equal(documentTitle(FACTORY_HOSTNAME), 'Build on Megapot | megapot.build');
     assert.equal(FACTORY_DESCRIPTION.includes('Picker → configure → deploy'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('Developer factory'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('player site'), true);
     assert.deepEqual(
       IA_STEPS.map((step) => step.id),
       ['picker', 'configure', 'deploy'],
@@ -47,6 +49,7 @@ describe('factory SEO / IA', () => {
     const graph = factoryJsonLd();
     const encoded = JSON.stringify(graph);
     assert.equal(encoded.includes('HowTo'), true);
+    assert.equal(encoded.includes('player-facing'), true);
     for (const step of IA_STEPS) {
       assert.equal(encoded.includes(step.label), true);
       assert.equal(encoded.includes(`#${step.id}`), true);
