@@ -5,4 +5,4 @@ contact_links:
     about: API reference, contract docs, and AI-assisted customization for building on Megapot.
   - name: Megapot Data API questions
     url: https://api.megapot.io
-    about: For questions about the Megapot Data API itself (not the starter kit).
+    about: For questions about the Megapot Data API itself (not this factory).

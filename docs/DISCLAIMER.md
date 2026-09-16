@@ -1,13 +1,15 @@
 # Disclaimer
 
-This application is an **Infrastructure Participant interface** — a community-built reference frontend that interacts with the Megapot on-chain protocol on Base. It is **not** operated by, affiliated with, or endorsed by Megapot.
+megapot.build is an **Infrastructure Participant interface** — a community site
+factory that helps builders ship Megapot-powered marketing pages. It is **not**
+operated by, affiliated with, or endorsed by Megapot.
 
-By connecting a wallet and using this application, you acknowledge that:
+By using a site produced from this factory you acknowledge that:
 
-- Interactions with the protocol — including ticket purchases and liquidity provision — are economic activities providing capital to the protocol's decentralized operations, **not recreational wagering**.
-- Outcomes are determined by the daily on-chain drawing.
+- Ticket purchases, drawings, and payouts happen on megapot.io, not on this factory.
 - Participating assets may be lost.
 - You are responsible for compliance with the laws of your own jurisdiction.
+- 18+ only.
 
 Use at your own risk.
 

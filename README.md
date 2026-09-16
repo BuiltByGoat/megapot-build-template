@@ -1,115 +1,95 @@
-# Megapot Jackpot Site
+# megapot.build
 
-Deploy your own white-label Megapot jackpot site — a working, forkable
-frontend for the Megapot on-chain lottery. Set one wallet address and ship.
+Site factory for the **Megapot Network**. Help builders ship Megapot-powered
+marketing sites, send players to the daily drawing, and keep attribution
+**off the public page**.
 
-- USDC-denominated on Base — mainnet (chain ID 8453) or Sepolia (84532)
-- React 19 + wagmi v2 + Vite 6 + Tailwind v3 — zero backend required
-- Your site earns a fee on every ticket bought and every winning claimed
-  through it — paid on-chain to your wallet
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/BuiltByGoat/megapot-build-template)
+This repository is the megapot.build lineage of the old jackpot-site template.
+The HTML template library it reuses is
+[BuiltByGoat/megapot-templates](https://github.com/BuiltByGoat/megapot-templates).
 
 ## What you get
 
-A working five-page Megapot app you can clone, rebrand, and ship. Pages
-cover the core protocol surface: live drawing state, ticket purchase
-(jackpot / bulk / subscription), wallet stats + claims, LP deposit /
-withdraw, and a paginated round history.
+- A factory landing that explains the product without secrets
+- A **marketing shell** you can preview at `/templates/marketing` and deploy as
+  its own Cloudflare Pages project (`templates/marketing/`)
+- A `/go` hop: public markup links there; a Pages Function reads a private env
+  name and 302s
+- cribble tokens (dark, green / ember / ice) shared by the factory and the starter
 
-Every file in `src/` carries a JSDoc header with `@skill / @contract /
-@endpoint / @customize` metadata, so a human or an AI coding agent dropped
-into the repo orients in one read. See [`AGENTS.md`](./AGENTS.md) for the
-convention, and the protocol-side docs at
-[`llms.megapot.io`](https://llms.megapot.io).
+## Privacy
 
-## Deploy in one click
+Never display on a public page, footer, README badge, or marketing copy:
 
-1. Click **Deploy with Vercel** above. It clones this template into your own
-   GitHub account and creates a Vercel project from it.
-2. When Vercel prompts for environment variables, set **`VITE_REFERRER_ADDRESS`**
-   to your Base wallet address. This is the wallet that earns your referral
-   fees — set it before your first real visitor.
-3. (Optional) set `VITE_APP_NAME` (your site name) and `VITE_CHAIN`
-   (`mainnet` or `testnet`).
-4. Deploy. Your site is live.
+- Referral codes
+- Wallet addresses
+- API tokens or other secrets
 
-> **Test your earnings from a different wallet.** The protocol does not credit
-> a referral when the buyer's wallet is also the referrer wallet (no
-> self-referral). To confirm fees accrue, buy a test ticket from a wallet that
-> is **not** your `VITE_REFERRER_ADDRESS`.
+Document **names** only. Values live on the host (Cloudflare Pages env) or in
+an uncommitted `.env.local`.
 
-## Fork manually (5 minutes)
+## Run locally
 
-1. `git clone https://github.com/BuiltByGoat/megapot-build-template`
-2. `cd megapot-build-template && pnpm bootstrap` — copies `.env.example`
-   → `.env` (if missing) and runs `pnpm install`
-3. Open `.env` and set `VITE_REFERRER_ADDRESS` to your wallet. This is the
-   one value every site needs to change.
-4. (Optional, both recommended) Also in `.env`:
-   - `VITE_MEGAPOT_API_KEY` — mint one at
-     [megapot.io/dashboard](https://megapot.io/dashboard); lifts the
-     anonymous tier (10/min, 500/day) to the partner tier (60/min,
-     10K/day) so Tickets and History don't throttle under traffic
-   - `VITE_WALLETCONNECT_PROJECT_ID` — without it, only browser-extension
-     wallets (MetaMask, Rabby, Brave, etc.) and Coinbase Wallet work; the
-     WalletConnect QR modal, Rainbow, and MetaMask mobile are disabled
-5. `pnpm dev` — http://localhost:5173
+Requires Node 22+ and [pnpm](https://pnpm.io).
 
-The app logs dev-mode warnings when `VITE_REFERRER_ADDRESS` is still the
-placeholder — so you can't accidentally ship without setting your wallet.
+```bash
+pnpm install
+cp .env.example .env.local   # names only — leave values empty
+pnpm dev
+```
 
-## How referral fees work
+Open [http://localhost:3000](http://localhost:3000).
 
-Megapot pays referral fees on every ticket purchased and every winning
-claimed through an interface. This template is wired to collect those fees on
-every purchase and pay them on-chain: your wallet (`VITE_REFERRER_ADDRESS`)
-receives the operator share, and a small platform share keeps the template
-free and maintained. The arrangement is set on-chain at purchase time. You
-claim your accrued fees from your own wallet — the app's wallet-stats page
-exposes the claim.
+- Factory landing: `/`
+- Marketing preview: `/templates/marketing`
+- `/go` in `next dev` is a static fallback (no private env). It points at the
+  public Megapot origin and tells you to bind the Function on Pages.
 
-## Environment variables
+```bash
+pnpm check    # lint + types + redirect tests + privacy scan
+pnpm build    # static export → out/  (Cloudflare Pages output)
+```
 
-| Var | What | What breaks if blank |
-|---|---|---|
-| `VITE_REFERRER_ADDRESS` | Wallet that receives your referral fees | Defaults to a dead address (`0x…dEaD`); fees earned on it are unrecoverable — set your wallet |
-| `VITE_CHAIN` | `mainnet` or `testnet` | Defaults to `mainnet`; must agree with `VITE_RPC_URL` |
-| `VITE_RPC_URL` | Base / Base Sepolia HTTPS RPC | Defaults to public RPC — rate-limited, fine for local dev only |
-| `VITE_WALLETCONNECT_PROJECT_ID` | WalletConnect Cloud project ID | WC QR + Rainbow + MetaMask mobile disabled; injected wallets + Coinbase Wallet still work |
-| `VITE_MEGAPOT_API_KEY` | Data API key (browser tier) — [Get a key](https://megapot.io/dashboard) | Empty = anonymous tier (10/min, 500/day) |
-| `VITE_API_BASE_URL` | Override Data API URL — set to `/api/megapot` for the proxy tier | Empty = `https://api.megapot.io/v1` |
-| `VITE_APP_NAME` | Your site name; label in wallet-connect modals | Falls back to a generic name |
-| `MEGAPOT_API_KEY` | Server-side Data API key (proxy tier only) — [Get a key](https://megapot.io/dashboard) | Required only if you deploy `server/proxy.ts` |
+## Private env names
 
-Full reference + commented defaults: [`.env.example`](./.env.example).
+| Name | Public? | Role |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_NAME` | yes (label) | Factory title. Safe. Not attribution. |
+| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. Empty → `https://megapot.io`. |
+| `MEGAPOT_REFERRER_ADDRESS` | **no** | Reserved for a future on-chain app template. Unused by the marketing shell. |
+| `MEGAPOT_API_KEY` | **no** | Reserved for server-side Data API reads. Never prefix with `NEXT_PUBLIC_`. |
+
+See [`.env.example`](./.env.example). Do not put values in git.
+
+## Deploy shape (Cloudflare Pages)
+
+Target: the operator's personal Cloudflare account. GitHub stays
+`BuiltByGoat/megapot-build-template`.
+
+### Factory (this repo root)
+
+1. New Pages project → connect this GitHub repo.
+2. Framework: **None** (or Next.js static). Build command: `pnpm install && pnpm build`. Output directory: `out`.
+3. Pages will pick up `functions/go.ts` as `GET /go`.
+4. Settings → Environment variables → set `MEGAPOT_PLAY_DESTINATION` (and the other names if you need them later). Encrypt / keep them out of logs.
+5. Deploy. View-source the landing and the marketing preview: you should see `/go`, not the destination.
+
+### Marketing starter only
+
+Point a Pages project at `templates/marketing` (no build; output `/`). Same
+Function + same env names. Details in
+[`templates/marketing/README.md`](./templates/marketing/README.md).
 
 ## Customize
 
-Rebrand seams — brand identity, wallet provider, chain, LP feature toggle,
-API-key safety, allowance strategy, disclaimer line, UI copy — are each a
-single edit point with a short rationale in
-[`docs/CUSTOMIZE.md`](./docs/CUSTOMIZE.md). Files that are rebrand seams are
-marked ⚙ in [`docs/CUSTOMIZE.md`](./docs/CUSTOMIZE.md).
+- Factory copy: `src/components/FactoryLanding.tsx`
+- Tokens: `src/styles/cribble.css` (factory) and `templates/marketing/cribble.css` (starter)
+- Official Megapot origins: `src/lib/site.ts`
 
-## Deploy shapes
-
-The app builds to a static `dist/` (`pnpm build`). Three deploy shapes, one
-per Data API key tier — pick once per fork:
-
-- **Static hosting (anonymous tier)** — no backend, no key. Works on Vercel
-  static, Cloudflare Pages, GitHub Pages, Netlify, S3 + CloudFront. 10/min,
-  500/day per IP.
-- **Browser key (higher tier)** — set `VITE_MEGAPOT_API_KEY` in your host's
-  env vars (60/min, 10K/day). The key ships in the browser bundle —
-  acceptable for the read-only Data API; rotate from the
-  [dashboard](https://megapot.io/dashboard) if leaked.
-- **Proxy (recommended for production keys)** — deploy
-  [`server/proxy.ts`](./server/proxy.ts) alongside the static site, set
-  `MEGAPOT_API_KEY` server-side and `VITE_API_BASE_URL=/api/megapot`. The key
-  never reaches the browser. Platform wrappers in
-  [`examples/`](./examples/README.md) cover Vercel Functions and Cloudflare
-  Workers.
+Older Formal / Fun / Degen / Daily HTML lives in
+[megapot-templates](https://github.com/BuiltByGoat/megapot-templates). Those
+files still use an invite placeholder — do not paste that token into this
+factory's public UI.
 
 ## License
 
@@ -117,6 +97,5 @@ MIT — see [`LICENSE`](./LICENSE).
 
 ## Disclaimer
 
-This application is an Infrastructure Participant interface, not operated by,
-affiliated with, or endorsed by Megapot. Participating assets may be lost.
-Full text in [`docs/DISCLAIMER.md`](./docs/DISCLAIMER.md).
+Independent factory, not Megapot. 18+. Full text in
+[`docs/DISCLAIMER.md`](./docs/DISCLAIMER.md).

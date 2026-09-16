@@ -1,0 +1,33 @@
+/**
+ * cribble tokens — dark canvas, green / ember / ice accents.
+ * Swap values here (or point at a published cribble package) without
+ * touching layout. Marketing starter copies this file as-is.
+ */
+
+:root {
+  --crib-bg: #07090b;
+  --crib-bg-elevated: #0c1014;
+  --crib-bg-card: #11171c;
+  --crib-ink: #e7eee8;
+  --crib-muted: #8d9890;
+  --crib-faint: #5d6860;
+  --crib-line: #1c2620;
+  --crib-line-strong: #2a3830;
+  --crib-green: #3dcc7a;
+  --crib-green-ink: #04210f;
+  --crib-green-dim: #123322;
+  --crib-ember: #e07a3d;
+  --crib-ember-ink: #2a1206;
+  --crib-ember-dim: #3a2014;
+  --crib-ice: #7ec8d4;
+  --crib-ice-ink: #062026;
+  --crib-ice-dim: #163038;
+  --crib-danger: #e25b5b;
+  --crib-radius: 14px;
+  --crib-radius-sm: 8px;
+  --crib-sans: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
+  --crib-mono: "IBM Plex Mono", "ui-monospace", "SFMono-Regular", monospace;
+  --crib-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --crib-space: 1.15;
+  color-scheme: dark;
+}
