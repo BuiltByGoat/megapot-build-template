@@ -29,7 +29,7 @@ an uncommitted `.env.local`.
 
 ## Run locally
 
-Requires Node 22+ and [pnpm](https://pnpm.io).
+Requires Node 20.19+ and [pnpm](https://pnpm.io). `.nvmrc` pins 22 for Pages.
 
 ```bash
 pnpm install
@@ -92,7 +92,7 @@ GitHub stays `BuiltByGoat/megapot-build-template`.
 1. Keep the `megapot-build` Pages project. Git integration (not a lone `out/`
    upload — Functions live in `functions/`).
 2. Framework: **None** (or Next.js static). Build command: `pnpm install && pnpm build`. Output directory: `out`.
-3. Node 22 (see `.nvmrc`).
+3. Node 22 (see `.nvmrc`). `pnpm build` / `pnpm check` also run on Node 20.19.
 4. Pages picks up `functions/go.js` as `GET /go` and `functions/go/index.js` as
    `GET /go/`. `out/_routes.json` includes `/*` and excludes only real static
    assets. Never exclude `/go`.

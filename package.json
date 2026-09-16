@@ -6,16 +6,16 @@
   "description": "megapot.build — factory for BuiltByGoat/network-site-template. Attribution stays in private env.",
   "scripts": {
     "dev": "next dev",
-    "build": "SITE_HOSTNAME=${SITE_HOSTNAME:-megapot.build} next build && node --experimental-strip-types scripts/write-pages-routes.ts",
+    "build": "SITE_HOSTNAME=${SITE_HOSTNAME:-megapot.build} next build && tsx scripts/write-pages-routes.ts",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint",
     "format": "biome format --write",
     "privacy": "node scripts/check-privacy.mjs",
-    "utms": "node --experimental-strip-types scripts/check-utms.mjs",
-    "go": "node --experimental-strip-types scripts/check-go.mjs",
-    "seo": "node --experimental-strip-types scripts/check-seo.mjs",
-    "test": "node --experimental-strip-types --test src/lib/*.test.ts",
+    "utms": "tsx scripts/check-utms.mjs",
+    "go": "tsx scripts/check-go.mjs",
+    "seo": "tsx scripts/check-seo.mjs",
+    "test": "tsx --test src/lib/*.test.ts",
     "check": "biome check && pnpm typecheck && pnpm test && pnpm privacy && pnpm build && pnpm utms --generated && pnpm go && pnpm seo"
   },
   "dependencies": {
@@ -28,9 +28,10 @@
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "tsx": "^4.23.13",
     "typescript": "^5.7.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=20.19"
   }
 }

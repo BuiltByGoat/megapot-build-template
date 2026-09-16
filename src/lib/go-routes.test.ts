@@ -58,6 +58,15 @@ describe('Pages Function files', () => {
     assert.equal(wrangler.includes('name = "megapot-build"'), true);
     assert.equal(wrangler.includes('SITE_HOSTNAME = "megapot.build"'), true);
   });
+
+  it('runs TypeScript check and postbuild scripts via tsx (Node 20-safe)', () => {
+    const pkg = JSON.parse(readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
+    const scripts = Object.values(pkg.scripts ?? {}).join('\n');
+    assert.equal(scripts.includes('experimental-strip-types'), false);
+    assert.equal(scripts.includes('tsx scripts/write-pages-routes.ts'), true);
+    assert.equal(scripts.includes('tsx scripts/check-seo.mjs'), true);
+    assert.equal(typeof pkg.engines?.node === 'string' && pkg.engines.node.includes('20'), true);
+  });
 });
 
 describe('findStaticGoArtifacts', () => {
