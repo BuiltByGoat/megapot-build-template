@@ -18,10 +18,9 @@ export default function DisclaimerPage() {
         <p className="kicker">Independence</p>
         <h1 style={{ letterSpacing: '-0.035em', fontSize: '2.2rem' }}>Disclaimer</h1>
         <p>
-          megapot.build is an independent Infrastructure Participant interface — a
-          community developer factory. Builders clone and deploy the player-facing
-          Megapot Network site template. It is not operated by, affiliated with, or
-          endorsed by Megapot.
+          megapot.build is an independent Infrastructure Participant interface — a community
+          developer factory. Builders clone and deploy the player-facing Megapot Network site
+          template. It is not operated by, affiliated with, or endorsed by Megapot.
         </p>
         <p>
           Ticket purchases, drawings, and payouts happen on megapot.io. Latest results live on{' '}

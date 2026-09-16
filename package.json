@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-    "description": "megapot.build — developer factory for BuiltByGoat/network-site-template. Clones ship player sites. Attribution stays in private env.",
+  "description": "megapot.build — developer factory for BuiltByGoat/network-site-template. Clones ship player sites. Attribution stays in private env.",
   "scripts": {
     "dev": "next dev",
     "build": "SITE_HOSTNAME=${SITE_HOSTNAME:-megapot.build} next build && tsx scripts/write-pages-routes.ts",
