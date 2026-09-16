@@ -24,9 +24,9 @@ export function FactoryLanding() {
           <a href={LINKS.cloneable} rel="noreferrer">
             BuiltByGoat/network-site-template
           </a>
-          , bind <em>your</em> play destination in private host env, and ship a
-          front door whose public copy sells play — not a builder ad. Codes,
-          wallets, and tokens never appear on the page.
+          , bind <em>your</em> play destination in private host env, and ship a front door whose
+          public copy sells play — not a builder ad. Codes, wallets, and tokens never appear on the
+          page.
         </p>
         <div className="cta-row">
           <a className="btn btn-green" href={LINKS.cloneable} rel="noreferrer">
