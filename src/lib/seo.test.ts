@@ -39,10 +39,7 @@ describe('factory SEO / IA', () => {
   });
 
   it('keeps /go out of the sitemap and disallows it from robots', () => {
-    assert.equal(
-      SITEMAP_PATHS.some((pathname) => pathname === '/go' || pathname.startsWith('/go')),
-      false,
-    );
+    assert.deepEqual([...SITEMAP_PATHS], ['/', '/disclaimer/']);
     assert.deepEqual([...ROBOTS_DISALLOW], ['/go', '/go/']);
   });
 
