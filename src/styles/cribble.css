@@ -1,0 +1,37 @@
+/**
+ * cribble tokens — kit SoT.
+ *   canvas  #000
+ *   green   #02fe01
+ *   ember   #ff6a1a
+ *   ice     #9bdcf5
+ * Marketing starter `templates/marketing/cribble.css` must keep the same
+ * four values. Derived surfaces stay near-black so the accents read.
+ */
+
+:root {
+  --crib-bg: #000;
+  --crib-bg-elevated: #0a0a0a;
+  --crib-bg-card: #111;
+  --crib-ink: #e7eee8;
+  --crib-muted: #8d9890;
+  --crib-faint: #5d6860;
+  --crib-line: #1a1a1a;
+  --crib-line-strong: #2a2a2a;
+  --crib-green: #02fe01;
+  --crib-green-ink: #000;
+  --crib-green-dim: #022801;
+  --crib-ember: #ff6a1a;
+  --crib-ember-ink: #000;
+  --crib-ember-dim: #3a1808;
+  --crib-ice: #9bdcf5;
+  --crib-ice-ink: #001018;
+  --crib-ice-dim: #0d2a36;
+  --crib-danger: #e25b5b;
+  --crib-radius: 14px;
+  --crib-radius-sm: 8px;
+  --crib-sans: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
+  --crib-mono: "IBM Plex Mono", "ui-monospace", "SFMono-Regular", monospace;
+  --crib-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --crib-space: 1.15;
+  color-scheme: dark;
+}

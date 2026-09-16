@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["**", "!out", "!.next", "!public/starter", "!pnpm-lock.yaml"]
   },
   "css": {
     "parser": {
