@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono, Outfit } from 'next/font/google';
-import { SITE_NAME } from '@/lib/site';
+import { documentTitle, SITE_NAME } from '@/lib/site';
 import '@/styles/factory.css';
 
 const outfit = Outfit({
@@ -16,19 +16,21 @@ const plex = IBM_Plex_Mono({
   display: 'swap',
 });
 
+const title = documentTitle(SITE_NAME);
+
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_NAME} — Megapot site factory`,
+    default: title,
     template: `%s · ${SITE_NAME}`,
   },
   description:
-    'A Megapot Network site factory. Preview a marketing shell, bind attribution in private env, deploy to Cloudflare Pages. No referral codes or wallets on the public page.',
+    'Megapot Network site factory. Clone network-site-template, bind SITE_HOSTNAME and MEGAPOT_PLAY_DESTINATION privately, deploy to Cloudflare Pages.',
   icons: { icon: '/favicon.svg' },
   metadataBase: new URL('https://megapot.build'),
   openGraph: {
-    title: `${SITE_NAME} — Megapot site factory`,
+    title,
     description:
-      'Ship Megapot-powered marketing sites without leaking attribution into public markup.',
+      'Builder hub for the canonical Megapot Network cloneable. Attribution stays in host env.',
     url: 'https://megapot.build',
     siteName: SITE_NAME,
     type: 'website',

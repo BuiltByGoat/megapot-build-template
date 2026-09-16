@@ -3,36 +3,44 @@
  * @customize  Server-only play redirect. Public pages link to `/go`.
  *             The host binds MEGAPOT_PLAY_DESTINATION privately.
  *             Never interpolate the destination into HTML, JSON, or logs
- *             that reach the browser. Factory UTMs are appended here.
+ *             that reach the browser. Hostname UTMs are appended here.
  * ---
  *
- * Resolves the URL a Cloudflare Pages Function (or local worker) should
- * 302 to. Empty or invalid values fall back to the public Megapot origin
- * so a fresh deploy never ships a broken CTA. UTMs are always applied.
+ * Resolves the URL a Cloudflare Pages Function should 302 to. Empty or
+ * invalid values fall back to the public Megapot origin so a fresh
+ * deploy never ships a broken CTA. UTMs are always applied.
  */
 
-import { withFactoryUtms } from './utm.ts';
+import { PUBLIC_MEGAPOT_ORIGIN } from './origin.ts';
+import { resolveUtms, type UtmEnv, withUtms } from './utms.ts';
 
-export const PUBLIC_PLAY_FALLBACK = withFactoryUtms('https://megapot.io');
-
-export type PlayRedirectEnv = {
+export type PlayRedirectEnv = UtmEnv & {
   MEGAPOT_PLAY_DESTINATION?: string | undefined;
 };
 
-export function resolvePlayDestination(env: PlayRedirectEnv): string {
-  const raw = env.MEGAPOT_PLAY_DESTINATION?.trim();
-  if (!raw) return PUBLIC_PLAY_FALLBACK;
-
-  let parsed: URL;
+function isSafeHttpUrl(value: string): boolean {
   try {
-    parsed = new URL(raw);
+    const parsed = new URL(value);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
   } catch {
-    return PUBLIC_PLAY_FALLBACK;
+    return false;
   }
-
-  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
-    return PUBLIC_PLAY_FALLBACK;
-  }
-
-  return withFactoryUtms(parsed.toString());
 }
+
+export function resolvePlayDestination(envValue: string | undefined): string {
+  const trimmed = envValue?.trim();
+  if (!trimmed || !isSafeHttpUrl(trimmed)) {
+    return PUBLIC_MEGAPOT_ORIGIN;
+  }
+  return trimmed;
+}
+
+export function buildPlayRedirect(envValue: string | undefined, utmEnv: UtmEnv = {}): string {
+  return withUtms(resolvePlayDestination(envValue), resolveUtms(utmEnv));
+}
+
+export function resolvePlayDestinationFromEnv(env: PlayRedirectEnv): string {
+  return buildPlayRedirect(env.MEGAPOT_PLAY_DESTINATION, env);
+}
+
+export const PUBLIC_PLAY_FALLBACK = buildPlayRedirect(undefined, {});

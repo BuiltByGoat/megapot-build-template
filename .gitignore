@@ -6,9 +6,6 @@ node_modules
 out
 tsconfig.tsbuildinfo
 
-# generated starter preview (copied from templates/marketing)
-public/starter
-
 # env
 .env
 .env.local

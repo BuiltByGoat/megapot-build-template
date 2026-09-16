@@ -1,5 +1,5 @@
 name: Documentation issue
-description: Something in the README, AGENTS, starter docs, or in-source docs is wrong or unclear.
+description: Something in the README, AGENTS, or in-source docs is wrong or unclear.
 title: "[Docs]: "
 labels: ["documentation"]
 body:
@@ -7,7 +7,7 @@ body:
     id: location
     attributes:
       label: Which doc or file
-      description: e.g. `README.md`, `templates/marketing/README.md`, JSDoc on `src/lib/play-redirect.ts`.
+      description: e.g. `README.md`, JSDoc on `src/lib/play-redirect.ts`.
     validations:
       required: true
 

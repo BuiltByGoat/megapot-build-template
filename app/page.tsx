@@ -5,7 +5,7 @@ import { SiteHeader } from '@/components/SiteHeader';
 export default function HomePage() {
   return (
     <>
-      <SiteHeader current="home" />
+      <SiteHeader />
       <FactoryLanding />
       <SiteFooter />
     </>

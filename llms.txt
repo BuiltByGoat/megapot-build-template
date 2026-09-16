@@ -2,18 +2,21 @@
 
 app/layout.tsx — factory document shell + cribble fonts
 app/page.tsx — factory landing
-app/templates/marketing/page.tsx — iframe preview of the marketing starter
-app/go/page.tsx — static /go fallback (no private env)
 app/disclaimer/page.tsx — independence + 18+ note
 src/components/FactoryLanding.tsx — landing sections
 src/components/SiteHeader.tsx — factory nav
-src/components/SiteFooter.tsx — public footer (no secrets)
-src/lib/play-redirect.ts — MEGAPOT_PLAY_DESTINATION resolver + factory UTMs
-src/lib/utm.ts — hostname UTMs for Play / dashboard / /go
-src/lib/site.ts — public-safe labels and official Megapot origins
+src/components/SiteFooter.tsx — public footer (hub → megapot.network)
+src/lib/play-redirect.ts — MEGAPOT_PLAY_DESTINATION resolver + hostname UTMs
+src/lib/utms.ts — SITE_HOSTNAME → utm_source
+src/lib/origin.ts — official Megapot / Network / results origins
+src/lib/links.ts — /go, dashboard, results, hub, cloneable
+src/lib/site.ts — Build on Megapot | {SITE_NAME}
+src/lib/go-routes.ts — Function-win _routes.json + static /go strip
 src/styles/cribble.css — cribble tokens (green / ember / ice)
 src/styles/factory.css — factory chrome
-functions/go.ts — Cloudflare Pages Function for /go
-templates/marketing/ — standalone Pages starter (HTML + cribble + /go)
-scripts/sync-starter.mjs — copy starter into public/ for preview
+functions/go.js — Cloudflare Pages Function for /go
+functions/go/index.js — trailing-slash /go/
+scripts/write-pages-routes.ts — write out/_routes.json after next build
 scripts/check-privacy.mjs — fail on addresses / invite tokens
+scripts/check-utms.mjs — hostname UTMs + cribble SoT
+scripts/check-go.mjs — Function-win /go shape
