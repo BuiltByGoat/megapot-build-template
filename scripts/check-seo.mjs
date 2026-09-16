@@ -111,6 +111,11 @@ if (!statSync(outRoot, { throwIfNoEntry: false })?.isDirectory()) {
   if (sitemap.includes('/go')) {
     findings.push('sitemap.xml must not list /go — Function-win 302 only');
   }
+
+  const disclaimer = readFileSync(join(outRoot, 'disclaimer/index.html'), 'utf8');
+  if (!/rel="canonical" href="https:\/\/megapot\.build\/disclaimer\/?"/.test(disclaimer)) {
+    findings.push('Disclaimer must canonical https://megapot.build/disclaimer/');
+  }
 }
 
 for (const start of copyRoots) {

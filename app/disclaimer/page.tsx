@@ -5,6 +5,9 @@ import { LINKS } from '@/lib/links';
 
 export const metadata: Metadata = {
   title: 'Disclaimer',
+  description:
+    'Independence and 18+ note for the megapot.build factory. Play and payouts stay on megapot.io. Hub is megapot.network. Latest results are megapotresults.com.',
+  alternates: { canonical: '/disclaimer/' },
 };
 
 export default function DisclaimerPage() {
