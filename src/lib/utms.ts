@@ -5,18 +5,20 @@
  * ---
  *
  * Factory outbound links and every `/go` Location resolve campaign
- * params from private env. `utm_source` is the deploy hostname
- * (`SITE_HOSTNAME`), not a repo name.
+ * params from private env. `utm_source` requires SITE_HOSTNAME
+ * (factory Pages project must set SITE_HOSTNAME=megapot.build).
  */
 
+export const FACTORY_HOSTNAME = 'megapot.build';
+export const PAGES_PROJECT_NAME = 'megapot-build';
+
 export const DEFAULT_UTMS = {
-  utm_source: 'megapot.build',
   utm_medium: 'builder',
   utm_campaign: 'build-factory-v1',
 } as const;
 
 export type UtmParams = {
-  utm_source: string;
+  utm_source?: string;
   utm_medium: string;
   utm_campaign: string;
 };
@@ -73,11 +75,10 @@ export function resolveUtms(env: EnvBag = process.env): UtmParams {
     hostnameToUtmSource(env.SITE_HOSTNAME) ??
     hostnameToUtmSource(env.MEGAPOT_SITE_HOSTNAME) ??
     readToken(env.MEGAPOT_UTM_SOURCE) ??
-    hostnameToUtmSource(env.CF_PAGES_URL) ??
-    DEFAULT_UTMS.utm_source;
+    hostnameToUtmSource(env.CF_PAGES_URL);
 
   return {
-    utm_source: source,
+    ...(source ? { utm_source: source } : {}),
     utm_medium: readToken(env.MEGAPOT_UTM_MEDIUM) ?? DEFAULT_UTMS.utm_medium,
     utm_campaign: readToken(env.MEGAPOT_UTM_CAMPAIGN) ?? DEFAULT_UTMS.utm_campaign,
   };

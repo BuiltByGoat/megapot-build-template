@@ -7,9 +7,13 @@ import {
 } from './play-redirect.ts';
 import { DEFAULT_UTMS } from './utms.ts';
 
-function assertFactoryUtms(href: string, source: string = DEFAULT_UTMS.utm_source) {
+function assertFactoryUtms(href: string, source?: string) {
   const url = new URL(href);
-  assert.equal(url.searchParams.get('utm_source'), source);
+  if (source) {
+    assert.equal(url.searchParams.get('utm_source'), source);
+  } else {
+    assert.equal(url.searchParams.get('utm_source'), null);
+  }
   assert.equal(url.searchParams.get('utm_medium'), DEFAULT_UTMS.utm_medium);
   assert.equal(url.searchParams.get('utm_campaign'), DEFAULT_UTMS.utm_campaign);
 }
@@ -34,7 +38,7 @@ describe('resolvePlayDestination', () => {
 });
 
 describe('resolvePlayDestinationFromEnv', () => {
-  it('falls back with factory UTMs when unset', () => {
+  it('falls back with factory medium/campaign when hostname is unset', () => {
     const dest = resolvePlayDestinationFromEnv({});
     assert.equal(dest, PUBLIC_PLAY_FALLBACK);
     assertFactoryUtms(dest);

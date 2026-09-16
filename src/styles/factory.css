@@ -237,6 +237,7 @@ a {
 section {
   padding: 56px 0;
   border-top: 1px solid var(--crib-line);
+  scroll-margin-top: 88px;
 }
 
 section h2 {

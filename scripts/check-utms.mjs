@@ -6,7 +6,7 @@ import { extname, join, relative } from 'node:path';
 import { PLAY_HREF } from '../src/lib/links.ts';
 import { NETWORK_HUB_ORIGIN, PUBLIC_MEGAPOT_ORIGIN, RESULTS_ORIGIN } from '../src/lib/origin.ts';
 import { documentTitle, siteName } from '../src/lib/site.ts';
-import { locationHasCampaignUtms, resolveUtms } from '../src/lib/utms.ts';
+import { FACTORY_HOSTNAME, locationHasCampaignUtms, resolveUtms } from '../src/lib/utms.ts';
 
 const root = process.cwd();
 const includeGenerated = process.argv.includes('--generated');
@@ -47,18 +47,21 @@ function hostOf(url) {
 function hasResolvedUtms(url) {
   try {
     const parsed = new URL(decodeHref(url));
-    const expected = resolveUtms();
+    const expected = resolveUtms({
+      ...process.env,
+      SITE_HOSTNAME: process.env.SITE_HOSTNAME || FACTORY_HOSTNAME,
+    });
     const source = parsed.searchParams.get('utm_source');
     if (source === 'network-site-template' || source === 'megapot-templates') {
       return false;
     }
-    if (expected.utm_source && !locationHasCampaignUtms(parsed.toString())) {
+    if (!locationHasCampaignUtms(parsed.toString())) {
       return false;
     }
     return (
+      source === (expected.utm_source ?? FACTORY_HOSTNAME) &&
       parsed.searchParams.get('utm_medium') === expected.utm_medium &&
-      parsed.searchParams.get('utm_campaign') === expected.utm_campaign &&
-      (!expected.utm_source || source === expected.utm_source)
+      parsed.searchParams.get('utm_campaign') === expected.utm_campaign
     );
   } catch {
     return false;
@@ -112,6 +115,9 @@ if (!goSource.includes('resolveUtms')) {
 if (/utm_source:\s*['"]network-site-template['"]/.test(goSource)) {
   findings.push('/go must not hardcode utm_source as the literal network-site-template');
 }
+if (/utm_source:\s*['"]megapot\.build['"]/.test(goSource)) {
+  findings.push('/go must derive utm_source from SITE_HOSTNAME, not hardcode megapot.build');
+}
 for (const name of requiredGoEnv) {
   if (!goSource.includes(name)) {
     findings.push(`/go must read ${name} (utm_source from SITE_HOSTNAME)`);
@@ -163,7 +169,7 @@ if (includeGenerated) {
         }
         if (!hasResolvedUtms(href)) {
           findings.push(
-            `${cta} link must stamp resolved UTMs (SITE_HOSTNAME source when set): ${href}`,
+            `${cta} link must stamp SITE_HOSTNAME UTMs (factory: utm_source=${FACTORY_HOSTNAME}): ${href}`,
           );
         }
       }

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import {
   DEFAULT_UTMS,
+  FACTORY_HOSTNAME,
   hostnameToUtmSource,
   locationHasCampaignUtms,
   resolveUtms,
@@ -12,6 +13,11 @@ describe('hostnameToUtmSource', () => {
   it('strips scheme and www', () => {
     assert.equal(hostnameToUtmSource('https://www.clone-host.example'), 'clone-host.example');
     assert.equal(hostnameToUtmSource('clone-host.example'), 'clone-host.example');
+  });
+
+  it('accepts the factory hostname', () => {
+    assert.equal(hostnameToUtmSource('https://www.megapot.build'), FACTORY_HOSTNAME);
+    assert.equal(hostnameToUtmSource(FACTORY_HOSTNAME), FACTORY_HOSTNAME);
   });
 
   it('rejects empty, repo names, wallets, and invite tokens', () => {
@@ -26,8 +32,9 @@ describe('hostnameToUtmSource', () => {
 });
 
 describe('resolveUtms', () => {
-  it('defaults to the factory hostname when SITE_HOSTNAME is unset', () => {
+  it('omits utm_source when SITE_HOSTNAME is unset (required for HTML UTMs)', () => {
     assert.deepEqual(resolveUtms({}), DEFAULT_UTMS);
+    assert.equal(resolveUtms({}).utm_source, undefined);
   });
 
   it('derives hostname-style source from SITE_HOSTNAME', () => {
@@ -35,6 +42,7 @@ describe('resolveUtms', () => {
       resolveUtms({ SITE_HOSTNAME: 'https://www.clone-host.example' }).utm_source,
       'clone-host.example',
     );
+    assert.equal(resolveUtms({ SITE_HOSTNAME: FACTORY_HOSTNAME }).utm_source, FACTORY_HOSTNAME);
   });
 
   it('prefers SITE_HOSTNAME over aliases and explicit source', () => {
@@ -74,7 +82,7 @@ describe('resolveUtms', () => {
     );
   });
 
-  it('ignores invalid tokens and keeps factory defaults', () => {
+  it('ignores invalid tokens and keeps medium/campaign defaults', () => {
     assert.deepEqual(
       resolveUtms({
         SITE_HOSTNAME: 'not a host',
@@ -87,12 +95,21 @@ describe('resolveUtms', () => {
 });
 
 describe('withUtms', () => {
-  it('stamps factory defaults when hostname env is empty', () => {
+  it('does not invent a source when hostname env is empty', () => {
     const url = withUtms('https://megapot.io/dashboard', resolveUtms({}));
     const parsed = new URL(url);
-    assert.equal(parsed.searchParams.get('utm_source'), DEFAULT_UTMS.utm_source);
+    assert.equal(parsed.searchParams.get('utm_source'), null);
     assert.equal(parsed.searchParams.get('utm_medium'), DEFAULT_UTMS.utm_medium);
     assert.equal(parsed.searchParams.get('utm_campaign'), DEFAULT_UTMS.utm_campaign);
+  });
+
+  it('stamps SITE_HOSTNAME as utm_source when set', () => {
+    const url = withUtms(
+      'https://megapot.io/dashboard',
+      resolveUtms({ SITE_HOSTNAME: FACTORY_HOSTNAME }),
+    );
+    const parsed = new URL(url);
+    assert.equal(parsed.searchParams.get('utm_source'), FACTORY_HOSTNAME);
   });
 
   it('does not overwrite existing utm params', () => {

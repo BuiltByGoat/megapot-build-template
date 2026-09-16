@@ -6,7 +6,7 @@
   "description": "megapot.build — factory for BuiltByGoat/network-site-template. Attribution stays in private env.",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node --experimental-strip-types scripts/write-pages-routes.ts",
+    "build": "SITE_HOSTNAME=${SITE_HOSTNAME:-megapot.build} next build && node --experimental-strip-types scripts/write-pages-routes.ts",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint",

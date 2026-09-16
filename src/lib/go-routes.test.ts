@@ -48,7 +48,15 @@ describe('Pages Function files', () => {
     assert.equal(goSource.includes(DEFAULT_UTMS.utm_medium), true);
     assert.equal(goSource.includes(DEFAULT_UTMS.utm_campaign), true);
     assert.equal(/utm_source:\s*['"]network-site-template['"]/.test(goSource), false);
+    assert.equal(/utm_source:\s*['"]megapot\.build['"]/.test(goSource), false);
     assert.equal(goSource.includes("from '"), false);
+  });
+
+  it('does not put account_id in wrangler.toml and sets factory SITE_HOSTNAME', () => {
+    const wrangler = readFileSync(path.join(process.cwd(), 'wrangler.toml'), 'utf8');
+    assert.equal(/^\s*account_id\s*=/m.test(wrangler), false);
+    assert.equal(wrangler.includes('name = "megapot-build"'), true);
+    assert.equal(wrangler.includes('SITE_HOSTNAME = "megapot.build"'), true);
   });
 });
 

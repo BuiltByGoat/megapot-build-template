@@ -1,7 +1,6 @@
 const PUBLIC_MEGAPOT_ORIGIN = 'https://megapot.io';
 
 const DEFAULT_UTMS = {
-  utm_source: 'megapot.build',
   utm_medium: 'builder',
   utm_campaign: 'build-factory-v1',
 };
@@ -57,11 +56,10 @@ function resolveUtms(env) {
     hostnameToUtmSource(bag.SITE_HOSTNAME) ??
     hostnameToUtmSource(bag.MEGAPOT_SITE_HOSTNAME) ??
     readToken(bag.MEGAPOT_UTM_SOURCE) ??
-    hostnameToUtmSource(bag.CF_PAGES_URL) ??
-    DEFAULT_UTMS.utm_source;
+    hostnameToUtmSource(bag.CF_PAGES_URL);
 
   return {
-    utm_source: source,
+    ...(source ? { utm_source: source } : {}),
     utm_medium: readToken(bag.MEGAPOT_UTM_MEDIUM) ?? DEFAULT_UTMS.utm_medium,
     utm_campaign: readToken(bag.MEGAPOT_UTM_CAMPAIGN) ?? DEFAULT_UTMS.utm_campaign,
   };

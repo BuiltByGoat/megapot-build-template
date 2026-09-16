@@ -16,6 +16,7 @@ src/styles/cribble.css — cribble tokens (green / ember / ice)
 src/styles/factory.css — factory chrome
 functions/go.js — Cloudflare Pages Function for /go
 functions/go/index.js — trailing-slash /go/
+wrangler.toml — Pages project megapot-build; SITE_HOSTNAME=megapot.build; no account_id
 scripts/write-pages-routes.ts — write out/_routes.json after next build
 scripts/check-privacy.mjs — fail on addresses / invite tokens
 scripts/check-utms.mjs — hostname UTMs + cribble SoT
