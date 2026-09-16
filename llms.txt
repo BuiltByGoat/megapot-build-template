@@ -5,7 +5,7 @@ app/page.tsx — factory landing
 app/disclaimer/page.tsx — independence + 18+ note
 app/robots.ts — allow pages; disallow /go (302 only)
 app/sitemap.ts — / and /disclaimer/ only
-src/components/FactoryLanding.tsx — picker → configure → deploy
+src/components/FactoryLanding.tsx — developer factory; clones ship player sites
 src/components/FactoryJsonLd.tsx — HowTo JSON-LD
 src/components/SiteHeader.tsx — factory nav
 src/components/SiteFooter.tsx — public footer (hub → megapot.network)

@@ -18,10 +18,7 @@ export function SiteHeader() {
         <a href="/#configure">Configure</a>
         <a href="/#deploy">Deploy</a>
         <a href={LINKS.cloneable} rel="noreferrer">
-          Template
-        </a>
-        <a href={LINKS.play} data-cta="play">
-          Play
+          Clone template
         </a>
       </nav>
     </header>

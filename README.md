@@ -1,17 +1,26 @@
 # megapot.build
 
-Factory / explainer for the **Megapot Network** cloneable:
+**Developer factory** / explainer for the Megapot Network. Builders clone
 [BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
-(`main`).
+(`main`) and ship a **player-facing** site.
 
-This repo is the builder hub. It is **not** the site you clone.
+This repo is the factory hub. It is **not** the site you clone. The template
+homepage sells play to players — it is not a developer brochure.
 
-Live template preview: [network-site-template.pages.dev](https://network-site-template.pages.dev).
+Live player preview: [network-site-template.pages.dev](https://network-site-template.pages.dev).
+
+## Two-sided funnel
+
+1. A developer visits **megapot.build** (this factory).
+2. They clone **network-site-template** and deploy a player marketing shell.
+3. They bind **their** play / referral destination in private host env
+   (`MEGAPOT_PLAY_DESTINATION`) — never on a public page.
+4. Players tap Play → Megapot. Second-level referrals stay with the builder.
 
 ## IA
 
-1. **Picker** — clone `network-site-template`
-2. **Configure** — bind `SITE_HOSTNAME` + `MEGAPOT_PLAY_DESTINATION` (private)
+1. **Picker** — clone the player shell (`network-site-template`)
+2. **Configure** — bind `SITE_HOSTNAME` + your private `MEGAPOT_PLAY_DESTINATION`
 3. **Deploy** — Cloudflare Pages `out/` + Function-win `/go` (302 only)
 
 Cribble tokens only (`#000` / `#02fe01` / `#ff6a1a` / `#9bdcf5`).
@@ -63,7 +72,7 @@ include `utm_source=megapot.build`.
 | `MEGAPOT_UTM_SOURCE` | **no** | Optional explicit `utm_source` if hostname envs are unset. |
 | `MEGAPOT_UTM_MEDIUM` | **no** | `utm_medium` override (factory default `builder`). |
 | `MEGAPOT_UTM_CAMPAIGN` | **no** | `utm_campaign` override (factory default `build-factory-v1`). |
-| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. Empty → public Megapot origin. |
+| `MEGAPOT_PLAY_DESTINATION` | **no** | Your private play / referral destination. Absolute URL the `/go` Function redirects to. Empty → public Megapot origin. |
 | `MEGAPOT_REFERRER_ADDRESS` | **no** | Reserved. Unused by the cloneable v1 shell. |
 | `MEGAPOT_API_KEY` | **no** | Reserved for server-side Data API reads. Never prefix with `NEXT_PUBLIC_`. |
 
@@ -107,7 +116,8 @@ treat an apex hostname as live.
 
 To ship a **player site**, clone
 [network-site-template](https://github.com/BuiltByGoat/network-site-template)
-instead of this factory.
+instead of this factory. Do not turn that public homepage into a developer
+landing.
 
 ## Customize
 

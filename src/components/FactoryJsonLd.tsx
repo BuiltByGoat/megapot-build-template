@@ -1,6 +1,6 @@
 /**
  * ---
- * @customize  Builder HowTo JSON-LD. Picker → configure → deploy.
+ * @customize  Developer-factory HowTo JSON-LD. Picker → configure → deploy.
  * ---
  */
 import { factoryJsonLd } from '@/lib/seo';

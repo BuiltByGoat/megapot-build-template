@@ -11,9 +11,10 @@ export function SiteFooter() {
   return (
     <footer className="site-footer wrap">
       <p>
-        {SITE_NAME} is an independent site factory for the Megapot Network. It is not operated by,
-        affiliated with, or endorsed by Megapot. Play and payouts happen on megapot.io. The Network
-        hub is{' '}
+        {SITE_NAME} is an independent developer factory for the Megapot Network.
+        Builders clone a player marketing shell — this page is not a player
+        brochure. It is not operated by, affiliated with, or endorsed by Megapot.
+        Play and payouts happen on megapot.io. The Network hub is{' '}
         <a href={LINKS.hub} data-cta="hub" rel="noreferrer">
           megapot.network
         </a>

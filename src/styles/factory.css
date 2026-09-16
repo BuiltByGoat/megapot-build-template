@@ -155,11 +155,16 @@ a {
 }
 
 .lede {
-  max-width: 46ch;
+  max-width: 48ch;
   margin: 0 0 28px;
   color: var(--crib-muted);
   font-size: 1.15rem;
   line-height: 1.55;
+}
+
+.lede strong {
+  color: var(--crib-ink);
+  font-weight: 650;
 }
 
 .cta-row {
@@ -234,6 +239,12 @@ a {
   font-size: 0.88rem;
 }
 
+.stat code {
+  font-family: var(--crib-mono);
+  font-size: 0.82em;
+  color: var(--crib-ice);
+}
+
 section {
   padding: 56px 0;
   border-top: 1px solid var(--crib-line);
@@ -251,6 +262,11 @@ section .intro {
   max-width: 58ch;
   margin: 0 0 28px;
   color: var(--crib-muted);
+}
+
+section .intro strong {
+  color: var(--crib-ink);
+  font-weight: 650;
 }
 
 .grid-3 {

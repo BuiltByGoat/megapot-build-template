@@ -1,9 +1,11 @@
 # AGENTS guide
 
-This repo is **megapot.build** — the Megapot Network site factory / explainer.
-Builders clone [BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
-(`main`), not this repo. IA: picker → configure → deploy. Cribble only.
-Protocol skills still live at [llms.megapot.io](https://llms.megapot.io).
+This repo is **megapot.build** — the Megapot Network **developer** factory /
+explainer. Builders clone
+[BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
+(`main`), not this repo, and ship a **player-facing** site. The template
+homepage sells play; this factory does not. IA: picker → configure → deploy.
+Cribble only. Protocol skills still live at [llms.megapot.io](https://llms.megapot.io).
 
 ## Privacy
 
@@ -15,7 +17,8 @@ Public play buttons go to `/go`. The host binds `MEGAPOT_PLAY_DESTINATION`.
 Location match. Medium / campaign defaults: `builder` / `build-factory-v1`.
 Cribble SoT: `#000` / `#02fe01` / `#ff6a1a` / `#9bdcf5`.
 
-Play is intent. Do not frame dashboard as signup.
+Play is intent on the clone. Do not frame dashboard as signup. Do not pitch
+this factory homepage to players. Referral destinations live in private env.
 
 ## Layout
 

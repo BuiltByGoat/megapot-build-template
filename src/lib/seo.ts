@@ -13,7 +13,7 @@ import { FACTORY_HOSTNAME } from './utms.ts';
 export const FACTORY_CANONICAL_ORIGIN = `https://${FACTORY_HOSTNAME}`;
 
 export const FACTORY_DESCRIPTION =
-  'Builder hub for BuiltByGoat/network-site-template. Picker → configure → deploy. Bind SITE_HOSTNAME=megapot.build so HTML and /go Location both stamp utm_source=megapot.build.';
+  'Developer factory for BuiltByGoat/network-site-template. Clones ship player sites. Picker → configure → deploy. Bind SITE_HOSTNAME=megapot.build so HTML and /go Location both stamp utm_source=megapot.build.';
 
 export const IA_STEPS = [
   { id: 'picker', label: 'Picker', href: '/#picker' },
@@ -44,7 +44,7 @@ export function factoryJsonLd(): Record<string, unknown> {
       },
       {
         '@type': 'HowTo',
-        name: 'Build a Megapot Network site',
+        name: 'Ship a player-facing Megapot Network site',
         description: FACTORY_DESCRIPTION,
         step: IA_STEPS.map((step, position) => ({
           '@type': 'HowToStep',

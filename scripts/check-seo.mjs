@@ -1,5 +1,5 @@
 /**
- * Growth SEO/IA: builder title, picker IA, SITE_HOSTNAME UTMs,
+ * Growth SEO/IA: developer-factory title, picker IA, SITE_HOSTNAME UTMs,
  * hub/results hosts, Function-win /go stays out of the index,
  * no apex DNS instructions.
  */
@@ -89,6 +89,18 @@ if (!statSync(outRoot, { throwIfNoEntry: false })?.isDirectory()) {
   }
   if (home.includes('utm_source=megapot.build') === false) {
     findings.push('HTML outbound hrefs must stamp utm_source=megapot.build');
+  }
+  if (!home.includes('https://github.com/BuiltByGoat/network-site-template')) {
+    findings.push('Landing must link the cloneable GitHub template');
+  }
+  if (!/developer factory/i.test(home)) {
+    findings.push('Landing must pitch the developer factory, not players');
+  }
+  if (!/player-facing|player site|player sites/i.test(home)) {
+    findings.push('Landing must say clones ship player sites');
+  }
+  if (!home.includes('MEGAPOT_PLAY_DESTINATION')) {
+    findings.push('Landing must name the private play / referral env');
   }
 
   const robots = readFileSync(join(outRoot, 'robots.txt'), 'utf8');

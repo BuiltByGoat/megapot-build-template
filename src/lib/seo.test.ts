@@ -19,6 +19,8 @@ describe('factory SEO / IA', () => {
   it('keeps a builder title and picker → configure → deploy IA', () => {
     assert.equal(documentTitle(FACTORY_HOSTNAME), 'Build on Megapot | megapot.build');
     assert.equal(FACTORY_DESCRIPTION.includes('Picker → configure → deploy'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('Developer factory'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('player sites'), true);
     assert.deepEqual(
       IA_STEPS.map((step) => step.id),
       ['picker', 'configure', 'deploy'],
