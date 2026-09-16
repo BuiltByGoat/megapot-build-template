@@ -518,4 +518,13 @@ section .intro {
   .hero {
     padding-top: 48px;
   }
+
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav {
+    width: 100%;
+  }
 }
