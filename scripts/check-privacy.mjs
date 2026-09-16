@@ -7,6 +7,7 @@ import { extname, join, relative } from 'node:path';
 
 const root = process.cwd();
 const skipDirs = new Set(['.git', '.next', 'node_modules']);
+const skipName = /\.test\.(ts|tsx|js|mjs)$/;
 
 const includeExt = new Set([
   '.html',
@@ -32,7 +33,9 @@ const findings = [];
 
 function shouldSkip(abs) {
   const rel = relative(root, abs);
-  return skipDirs.has(rel.split(/[\\/]/)[0]);
+  const parts = rel.split(/[\\/]/);
+  if (skipDirs.has(parts[0])) return true;
+  return skipName.test(parts[parts.length - 1] ?? '');
 }
 
 function walk(dir) {

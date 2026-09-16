@@ -3,22 +3,20 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "megapot.build — site factory for Megapot Network marketing shells. Attribution stays in private env.",
+  "description": "megapot.build — factory for BuiltByGoat/network-site-template. Attribution stays in private env.",
   "scripts": {
-    "predev": "node scripts/sync-starter.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/sync-starter.mjs",
-    "build": "next build",
-    "postbuild": "node scripts/check-privacy.mjs && node scripts/check-utms.mjs --generated",
+    "build": "SITE_HOSTNAME=${SITE_HOSTNAME:-megapot.build} next build && tsx scripts/write-pages-routes.ts",
     "start": "next start",
-    "preview": "pnpm build && pnpm start",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint",
     "format": "biome format --write",
     "privacy": "node scripts/check-privacy.mjs",
-    "utms": "node scripts/check-utms.mjs",
-    "test": "node --experimental-strip-types --test src/lib/play-redirect.test.ts src/lib/utm.test.ts",
-    "check": "biome check && pnpm typecheck && pnpm test && pnpm privacy && pnpm utms"
+    "utms": "tsx scripts/check-utms.mjs",
+    "go": "tsx scripts/check-go.mjs",
+    "seo": "tsx scripts/check-seo.mjs",
+    "test": "tsx --test src/lib/*.test.ts",
+    "check": "biome check && pnpm typecheck && pnpm test && pnpm privacy && pnpm build && pnpm utms --generated && pnpm go && pnpm seo"
   },
   "dependencies": {
     "next": "^15.5.3",
@@ -30,9 +28,10 @@
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "tsx": "^4.23.13",
     "typescript": "^5.7.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=20.19"
   }
 }

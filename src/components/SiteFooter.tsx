@@ -1,26 +1,33 @@
 /**
  * ---
  * @customize  Public footer. Keep attribution and wallets out of this file.
+ *             Hub → megapot.network. Latest results → megapotresults.com.
  * ---
  */
-import { LINKS, SITE_NAME } from '@/lib/site';
+import { LINKS } from '@/lib/links';
+import { SITE_NAME } from '@/lib/site';
 
 export function SiteFooter() {
   return (
     <footer className="site-footer wrap">
       <p>
         {SITE_NAME} is an independent site factory for the Megapot Network. It is not operated by,
-        affiliated with, or endorsed by Megapot. Play and payouts happen on{' '}
-        <a href={LINKS.play} rel="noreferrer">
-          megapot.io
+        affiliated with, or endorsed by Megapot. Play and payouts happen on megapot.io. The Network
+        hub is{' '}
+        <a href={LINKS.hub} data-cta="hub" rel="noreferrer">
+          megapot.network
         </a>
         .
       </p>
       <p>
         18+ only. A lottery is entertainment, not income — most tickets lose. Attribution belongs in
         private host env, never in this footer.{' '}
+        <a href={LINKS.results} data-cta="results" rel="noreferrer">
+          Latest results
+        </a>
+        {' · '}
         <a href={LINKS.factoryRepo} rel="noreferrer">
-          Source
+          Factory source
         </a>
         {' · '}
         <a href="/disclaimer/">Disclaimer</a>

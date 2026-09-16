@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono, Outfit } from 'next/font/google';
-import { SITE_NAME } from '@/lib/site';
+import { FACTORY_CANONICAL_ORIGIN, FACTORY_DESCRIPTION } from '@/lib/seo';
+import { documentTitle, SITE_NAME } from '@/lib/site';
 import '@/styles/factory.css';
 
 const outfit = Outfit({
@@ -16,22 +17,30 @@ const plex = IBM_Plex_Mono({
   display: 'swap',
 });
 
+const title = documentTitle(SITE_NAME);
+
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_NAME} — Megapot site factory`,
+    default: title,
     template: `%s · ${SITE_NAME}`,
   },
-  description:
-    'A Megapot Network site factory. Preview a marketing shell, bind attribution in private env, deploy to Cloudflare Pages. No referral codes or wallets on the public page.',
+  description: FACTORY_DESCRIPTION,
   icons: { icon: '/favicon.svg' },
-  metadataBase: new URL('https://megapot.build'),
+  metadataBase: new URL(FACTORY_CANONICAL_ORIGIN),
+  alternates: { canonical: '/' },
+  robots: { index: true, follow: true },
   openGraph: {
-    title: `${SITE_NAME} — Megapot site factory`,
-    description:
-      'Ship Megapot-powered marketing sites without leaking attribution into public markup.',
-    url: 'https://megapot.build',
+    title,
+    description: FACTORY_DESCRIPTION,
+    url: '/',
     siteName: SITE_NAME,
     type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary',
+    title,
+    description: FACTORY_DESCRIPTION,
   },
 };
 

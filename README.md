@@ -1,21 +1,20 @@
 # megapot.build
 
-Site factory for the **Megapot Network**. Help builders ship Megapot-powered
-marketing sites, send players to the daily drawing, and keep attribution
-**off the public page**.
+Factory / explainer for the **Megapot Network** cloneable:
+[BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
+(`main`).
 
-This repository is the megapot.build lineage of the old jackpot-site template.
-The HTML template library it reuses is
-[BuiltByGoat/megapot-templates](https://github.com/BuiltByGoat/megapot-templates).
+This repo is the builder hub. It is **not** the site you clone.
 
-## What you get
+Live template preview: [network-site-template.pages.dev](https://network-site-template.pages.dev).
 
-- A factory landing that explains the product without secrets
-- A **marketing shell** you can preview at `/templates/marketing` and deploy as
-  its own Cloudflare Pages project (`templates/marketing/`)
-- A `/go` hop: public markup links there; a Pages Function reads a private env
-  name and 302s
-- cribble tokens (dark, green / ember / ice) shared by the factory and the starter
+## IA
+
+1. **Picker** — clone `network-site-template`
+2. **Configure** — bind `SITE_HOSTNAME` + `MEGAPOT_PLAY_DESTINATION` (private)
+3. **Deploy** — Cloudflare Pages `out/` + Function-win `/go` (302 only)
+
+Cribble tokens only (`#000` / `#02fe01` / `#ff6a1a` / `#9bdcf5`).
 
 ## Privacy
 
@@ -30,7 +29,7 @@ an uncommitted `.env.local`.
 
 ## Run locally
 
-Requires Node 22+ and [pnpm](https://pnpm.io).
+Requires Node 20.19+ and [pnpm](https://pnpm.io). `.nvmrc` pins 22 for Pages.
 
 ```bash
 pnpm install
@@ -40,66 +39,81 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-- Factory landing: `/`
-- Marketing preview: `/templates/marketing`
-- `/go` in `next dev` is a static fallback (no private env). It points at the
-  public Megapot origin and tells you to bind the Function on Pages.
+`/go` is a Cloudflare Pages Function (`functions/go.js` +
+`functions/go/index.js`). `next dev` does not invoke it. After `pnpm build`,
+preview the Function-win export with `npx wrangler pages dev out` if you need
+the 302 locally.
 
 ```bash
-pnpm check    # lint + types + redirect tests + privacy scan
-pnpm build    # static export → out/  (Cloudflare Pages output)
+pnpm check    # lint + types + tests + privacy + UTMs + /go + SEO/IA
+pnpm build    # static export → out/  (writes out/_routes.json)
 ```
+
+`pnpm build` sets `SITE_HOSTNAME=megapot.build` unless the environment already
+has `SITE_HOSTNAME`. That is required so static dashboard / results / hub hrefs
+include `utm_source=megapot.build`.
 
 ## Private env names
 
 | Name | Public? | Role |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_NAME` | yes (label) | Factory title. Safe. Not attribution. |
-| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. Empty → public Megapot origin. `/go` always appends factory UTMs on the Location. |
-| `MEGAPOT_REFERRER_ADDRESS` | **no** | Reserved for a future on-chain app template. Unused by the marketing shell. |
+| `NEXT_PUBLIC_SITE_NAME` | yes (label) | Title is `Build on Megapot \| {SITE_NAME}`. Safe. Not attribution. |
+| `SITE_HOSTNAME` | **no** | Required for HTML UTMs. Factory Pages project must set `megapot.build`. |
+| `MEGAPOT_SITE_HOSTNAME` | **no** | Alias of `SITE_HOSTNAME`. |
+| `MEGAPOT_UTM_SOURCE` | **no** | Optional explicit `utm_source` if hostname envs are unset. |
+| `MEGAPOT_UTM_MEDIUM` | **no** | `utm_medium` override (factory default `builder`). |
+| `MEGAPOT_UTM_CAMPAIGN` | **no** | `utm_campaign` override (factory default `build-factory-v1`). |
+| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. Empty → public Megapot origin. |
+| `MEGAPOT_REFERRER_ADDRESS` | **no** | Reserved. Unused by the cloneable v1 shell. |
 | `MEGAPOT_API_KEY` | **no** | Reserved for server-side Data API reads. Never prefix with `NEXT_PUBLIC_`. |
 
-See [`.env.example`](./.env.example). Do not put values in git.
+See [`.env.example`](./.env.example). Do not put secret values in git.
 
 ## Hostname UTMs
 
-Play, dashboard, and results hrefs — and every `/go` 302 — set:
+`SITE_HOSTNAME` is required for HTML UTMs. `/go` Location uses the same resolver.
 
-- `utm_source=megapot.build`
-- `utm_medium=builder`
-- `utm_campaign=build-factory-v1`
+Factory (this repo / Pages project `megapot-build`):
 
-These are campaign params, not referral codes. Do not add wallets or invite paths to public markup.
+- `SITE_HOSTNAME=megapot.build` — required so HTML + Location match
+- `utm_medium` default `builder`
+- `utm_campaign` default `build-factory-v1`
 
-## Deploy shape (Cloudflare Pages)
+Clones set their own deploy host. These are campaign params, not referral codes.
 
-Target: the operator's personal Cloudflare account. GitHub stays
-`BuiltByGoat/megapot-build-template`.
+Play is intent. Dashboard and latest results are public look-ups, not a signup
+flow.
 
-### Factory (this repo root)
+## Pages project (Cloudflare)
 
-1. New Pages project → connect this GitHub repo.
+Existing project name: **`megapot-build`** (personal Cloudflare account).
+GitHub stays `BuiltByGoat/megapot-build-template`.
+
+1. Keep the `megapot-build` Pages project. Git integration (not a lone `out/`
+   upload — Functions live in `functions/`).
 2. Framework: **None** (or Next.js static). Build command: `pnpm install && pnpm build`. Output directory: `out`.
-3. Pages will pick up `functions/go.ts` as `GET /go`.
-4. Settings → Environment variables → set `MEGAPOT_PLAY_DESTINATION` (and the other names if you need them later). Encrypt / keep them out of logs.
-5. Deploy. View-source the landing and the marketing preview: you should see `/go`, not the destination.
+3. Node 22 (see `.nvmrc`). `pnpm build` / `pnpm check` also run on Node 20.19.
+4. Pages picks up `functions/go.js` as `GET /go` and `functions/go/index.js` as
+   `GET /go/`. `out/_routes.json` includes `/*` and excludes only real static
+   assets. Never exclude `/go`.
+5. Settings → Variables and Secrets → set `SITE_HOSTNAME=megapot.build` and
+   `MEGAPOT_PLAY_DESTINATION`. Encrypt private values / keep them out of logs.
+   `wrangler.toml` `[vars]` also sets `SITE_HOSTNAME` for local `pages dev`.
+   Do not add `account_id`.
+6. View-source the landing: you should see `/go`, not the destination.
 
-### Marketing starter only
+Custom-domain / apex attachment is DomainManager only. This README does not
+treat an apex hostname as live.
 
-Point a Pages project at `templates/marketing` (no build; output `/`). Same
-Function + same env names. Details in
-[`templates/marketing/README.md`](./templates/marketing/README.md).
+To ship a **player site**, clone
+[network-site-template](https://github.com/BuiltByGoat/network-site-template)
+instead of this factory.
 
 ## Customize
 
 - Factory copy: `src/components/FactoryLanding.tsx`
-- Tokens: `src/styles/cribble.css` (factory) and `templates/marketing/cribble.css` (starter)
-- Official Megapot origins: `src/lib/site.ts`
-
-Older Formal / Fun / Degen / Daily HTML lives in
-[megapot-templates](https://github.com/BuiltByGoat/megapot-templates). Those
-files still use an invite placeholder — do not paste that token into this
-factory's public UI.
+- Tokens: `src/styles/cribble.css`
+- Official origins: `src/lib/origin.ts`
 
 ## License
 

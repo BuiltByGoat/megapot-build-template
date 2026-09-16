@@ -1,5 +1,5 @@
 name: Bug report
-description: Something in the starter kit doesn't work as documented.
+description: Something in the factory doesn't work as documented.
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -15,19 +15,8 @@ body:
       options:
         - label: I've searched [existing issues](../../issues?q=is%3Aissue) and this isn't a duplicate.
           required: true
-        - label: I've read the [README](../../blob/main/README.md) and [CUSTOMIZE.md](../../blob/main/docs/CUSTOMIZE.md).
+        - label: I've read the [README](../../blob/main/README.md).
           required: true
-        - label: The bug reproduces on an unmodified clone of the starter (not just in my fork).
-          required: true
-
-  - type: input
-    id: version
-    attributes:
-      label: Starter kit version
-      description: Release tag or commit SHA you're running.
-      placeholder: "v0.1.0"
-    validations:
-      required: true
 
   - type: textarea
     id: description
@@ -43,10 +32,9 @@ body:
       label: Steps to reproduce
       placeholder: |
         1. Clone the repo and run `pnpm install`
-        2. Set env vars per `.env.example`
-        3. Run `pnpm dev`
-        4. Connect wallet, click "Play"
-        5. See error
+        2. Set env names per `.env.example`
+        3. Run `pnpm dev` or `pnpm build`
+        4. See error
     validations:
       required: true
 
@@ -70,7 +58,7 @@ body:
     attributes:
       label: Node version
       description: Output of `node --version`.
-      placeholder: "v20.11.0"
+      placeholder: "v22.11.0"
     validations:
       required: true
 
@@ -106,6 +94,5 @@ body:
     id: additional
     attributes:
       label: Additional context
-      description: Wallet provider, network (mainnet/testnet), anything else relevant.
     validations:
       required: false

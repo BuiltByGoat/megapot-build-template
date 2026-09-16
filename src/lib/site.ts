@@ -1,21 +1,19 @@
 /**
  * ---
  * @customize  Public-safe site labels only. No attribution values live here.
- *             Play / dashboard / results hrefs carry factory UTMs, not codes.
+ *             Title is the factory hub equivalent of Play on Megapot | {SITE_NAME}.
  * ---
  */
 
-import { withFactoryUtms } from './utm.ts';
+const FALLBACK_SITE_NAME = 'megapot.build';
 
-export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME?.trim() || 'megapot.build';
+export function siteName(): string {
+  const value = process.env.NEXT_PUBLIC_SITE_NAME?.trim();
+  return value && value.length > 0 ? value : FALLBACK_SITE_NAME;
+}
 
-export const LINKS = {
-  play: withFactoryUtms('https://megapot.io'),
-  dashboard: withFactoryUtms('https://megapot.io/dashboard'),
-  docs: 'https://llms.megapot.io',
-  protocolDocs: 'https://docs.megapot.io',
-  results: withFactoryUtms('https://megapot.io/results'),
-  templatesLibrary: 'https://github.com/BuiltByGoat/megapot-templates',
-  factoryRepo: 'https://github.com/BuiltByGoat/megapot-build-template',
-  go: '/go',
-} as const;
+export function documentTitle(name: string = siteName()): string {
+  return `Build on Megapot | ${name}`;
+}
+
+export const SITE_NAME = siteName();
