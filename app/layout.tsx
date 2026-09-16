@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono, Outfit } from 'next/font/google';
+import { FACTORY_CANONICAL_ORIGIN, FACTORY_DESCRIPTION } from '@/lib/seo';
 import { documentTitle, SITE_NAME } from '@/lib/site';
 import '@/styles/factory.css';
 
@@ -23,17 +24,23 @@ export const metadata: Metadata = {
     default: title,
     template: `%s · ${SITE_NAME}`,
   },
-  description:
-    'Megapot Network site factory. Clone network-site-template, bind SITE_HOSTNAME and MEGAPOT_PLAY_DESTINATION privately, deploy to Cloudflare Pages.',
+  description: FACTORY_DESCRIPTION,
   icons: { icon: '/favicon.svg' },
-  metadataBase: new URL('https://megapot.build'),
+  metadataBase: new URL(FACTORY_CANONICAL_ORIGIN),
+  alternates: { canonical: '/' },
+  robots: { index: true, follow: true },
   openGraph: {
     title,
-    description:
-      'Builder hub for the canonical Megapot Network cloneable. Attribution stays in host env.',
-    url: 'https://megapot.build',
+    description: FACTORY_DESCRIPTION,
+    url: '/',
     siteName: SITE_NAME,
     type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary',
+    title,
+    description: FACTORY_DESCRIPTION,
   },
 };
 

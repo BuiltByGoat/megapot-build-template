@@ -10,9 +10,9 @@ Live template preview: [network-site-template.pages.dev](https://network-site-te
 
 ## IA
 
-1. **Pick** — clone `network-site-template`
+1. **Picker** — clone `network-site-template`
 2. **Configure** — bind `SITE_HOSTNAME` + `MEGAPOT_PLAY_DESTINATION` (private)
-3. **Deploy** — Cloudflare Pages `out/` + Function-win `/go`
+3. **Deploy** — Cloudflare Pages `out/` + Function-win `/go` (302 only)
 
 Cribble tokens only (`#000` / `#02fe01` / `#ff6a1a` / `#9bdcf5`).
 
@@ -45,7 +45,7 @@ preview the Function-win export with `npx wrangler pages dev out` if you need
 the 302 locally.
 
 ```bash
-pnpm check    # lint + types + tests + privacy + UTMs + /go shape
+pnpm check    # lint + types + tests + privacy + UTMs + /go + SEO/IA
 pnpm build    # static export → out/  (writes out/_routes.json)
 ```
 

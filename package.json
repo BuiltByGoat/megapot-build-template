@@ -14,8 +14,9 @@
     "privacy": "node scripts/check-privacy.mjs",
     "utms": "node --experimental-strip-types scripts/check-utms.mjs",
     "go": "node --experimental-strip-types scripts/check-go.mjs",
+    "seo": "node --experimental-strip-types scripts/check-seo.mjs",
     "test": "node --experimental-strip-types --test src/lib/*.test.ts",
-    "check": "biome check && pnpm typecheck && pnpm test && pnpm privacy && pnpm build && pnpm utms --generated && pnpm go"
+    "check": "biome check && pnpm typecheck && pnpm test && pnpm privacy && pnpm build && pnpm utms --generated && pnpm go && pnpm seo"
   },
   "dependencies": {
     "next": "^15.5.3",

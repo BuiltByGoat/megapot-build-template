@@ -2,7 +2,7 @@
 
 This repo is **megapot.build** — the Megapot Network site factory / explainer.
 Builders clone [BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
-(`main`), not this repo. IA: pick → configure → deploy. Cribble only.
+(`main`), not this repo. IA: picker → configure → deploy. Cribble only.
 Protocol skills still live at [llms.megapot.io](https://llms.megapot.io).
 
 ## Privacy
@@ -22,9 +22,10 @@ Play is intent. Do not frame dashboard as signup.
 | Path | Purpose |
 | --- | --- |
 | `app/` | Next.js factory (landing, disclaimer) |
-| `src/components` | Factory chrome (picker / configure / deploy) |
+| `src/components` | Factory chrome (picker → configure → deploy) |
 | `src/lib/play-redirect.ts` | Shared destination resolver (tests) |
 | `src/lib/utms.ts` | Hostname UTM resolver (`SITE_HOSTNAME` required for source) |
+| `src/lib/seo.ts` | Canonical host, IA steps, robots/sitemap policy |
 | `functions/go.js` | Cloudflare Pages Function for `/go` |
 | `functions/go/index.js` | Same handler for trailing-slash `/go/` |
 | `wrangler.toml` | Pages project name `megapot-build`; `[vars] SITE_HOSTNAME`; no `account_id` |

@@ -14,7 +14,7 @@ export function SiteHeader() {
         <span className="brand-mark">{SITE_NAME}</span>
       </a>
       <nav className="nav" aria-label="Factory">
-        <a href="/#pick">Pick</a>
+        <a href="/#picker">Picker</a>
         <a href="/#configure">Configure</a>
         <a href="/#deploy">Deploy</a>
         <a href={LINKS.cloneable} rel="noreferrer">

@@ -1,16 +1,18 @@
 /**
  * ---
- * @customize  megapot.build landing. Picker / configure / deploy IA.
+ * @customize  megapot.build landing. Picker → configure → deploy IA.
  *             Public CTAs use /go or official origins — never a referral
  *             code or wallet. Cribble tokens only.
  * ---
  */
+import { FactoryJsonLd } from '@/components/FactoryJsonLd';
 import { LINKS } from '@/lib/links';
 import { FACTORY_HOSTNAME, PAGES_PROJECT_NAME } from '@/lib/utms';
 
 export function FactoryLanding() {
   return (
     <main id="main">
+      <FactoryJsonLd />
       <section className="hero wrap" aria-labelledby="hero-title">
         <p className="kicker">Megapot Network · factory</p>
         <h1 id="hero-title">
@@ -25,8 +27,8 @@ export function FactoryLanding() {
           on the host. Ship to Cloudflare Pages. This hub does not ship old HTML kits.
         </p>
         <div className="cta-row">
-          <a className="btn btn-green" href="#pick">
-            Start with Pick
+          <a className="btn btn-green" href="#picker">
+            Start with Picker
           </a>
           <a className="btn btn-ghost" href={LINKS.cloneable} rel="noreferrer">
             Clone network-site-template
@@ -37,9 +39,9 @@ export function FactoryLanding() {
         </div>
       </section>
 
-      <section className="wrap" id="pick" aria-labelledby="pick-title">
-        <p className="kicker">01 · Pick</p>
-        <h2 id="pick-title">The cloneable is network-site-template</h2>
+      <section className="wrap" id="picker" aria-labelledby="picker-title">
+        <p className="kicker">01 · Picker</p>
+        <h2 id="picker-title">The cloneable is network-site-template</h2>
         <p className="intro">
           There is no kit picker. Clone{' '}
           <a href={LINKS.cloneable} rel="noreferrer">

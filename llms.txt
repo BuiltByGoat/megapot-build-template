@@ -1,9 +1,12 @@
 # megapot.build — file manifest
 
-app/layout.tsx — factory document shell + cribble fonts
+app/layout.tsx — factory document shell + builder title/meta
 app/page.tsx — factory landing
 app/disclaimer/page.tsx — independence + 18+ note
-src/components/FactoryLanding.tsx — landing sections
+app/robots.ts — allow pages; disallow /go (302 only)
+app/sitemap.ts — / and /disclaimer/ only
+src/components/FactoryLanding.tsx — picker → configure → deploy
+src/components/FactoryJsonLd.tsx — HowTo JSON-LD
 src/components/SiteHeader.tsx — factory nav
 src/components/SiteFooter.tsx — public footer (hub → megapot.network)
 src/lib/play-redirect.ts — MEGAPOT_PLAY_DESTINATION resolver + hostname UTMs
@@ -11,6 +14,7 @@ src/lib/utms.ts — SITE_HOSTNAME → utm_source
 src/lib/origin.ts — official Megapot / Network / results origins
 src/lib/links.ts — /go, dashboard, results, hub, cloneable
 src/lib/site.ts — Build on Megapot | {SITE_NAME}
+src/lib/seo.ts — canonical host, IA steps, robots/sitemap policy
 src/lib/go-routes.ts — Function-win _routes.json + static /go strip
 src/styles/cribble.css — cribble tokens (green / ember / ice)
 src/styles/factory.css — factory chrome
@@ -21,3 +25,4 @@ scripts/write-pages-routes.ts — write out/_routes.json after next build
 scripts/check-privacy.mjs — fail on addresses / invite tokens
 scripts/check-utms.mjs — hostname UTMs + cribble SoT
 scripts/check-go.mjs — Function-win /go shape
+scripts/check-seo.mjs — title / IA / robots / sitemap / no apex DNS
