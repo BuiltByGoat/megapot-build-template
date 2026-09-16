@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { FACTORY_CANONICAL_ORIGIN, ROBOTS_DISALLOW } from '@/lib/seo';
 
+export const dynamic = 'force-static';
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
