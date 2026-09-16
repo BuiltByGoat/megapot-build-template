@@ -231,8 +231,8 @@ export function FactoryLanding() {
           <p>
             <code>SITE_HOSTNAME</code> stamps HTML UTMs so dashboard, results, and hub match{' '}
             <code>/go</code> Location. <code>MEGAPOT_PLAY_DESTINATION</code> is the Function&apos;s
-            redirect target. Hostname UTMs are campaign params (
-            <code>builder</code> / <code>build-factory-v1</code>).
+            redirect target. Hostname UTMs are campaign params (<code>builder</code> /{' '}
+            <code>build-factory-v1</code>).
           </p>
         </div>
       </section>
