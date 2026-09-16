@@ -11,6 +11,9 @@ The HTML template library is
 Never put referral codes, wallet addresses, or API tokens in public pages,
 footers, README badges, or marketing copy. Document env **names** only.
 Public play buttons go to `/go`. The host binds `MEGAPOT_PLAY_DESTINATION`.
+`/go` and Play/dashboard hrefs always set factory UTMs (`utm_source=megapot.build`,
+`utm_medium=builder`, `utm_campaign=build-factory-v1`). Cribble SoT accents:
+`#000` / `#02fe01` / `#ff6a1a` / `#9bdcf5`.
 
 ## Layout
 

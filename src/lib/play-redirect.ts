@@ -3,15 +3,17 @@
  * @customize  Server-only play redirect. Public pages link to `/go`.
  *             The host binds MEGAPOT_PLAY_DESTINATION privately.
  *             Never interpolate the destination into HTML, JSON, or logs
- *             that reach the browser.
+ *             that reach the browser. Factory UTMs are appended here.
  * ---
  *
  * Resolves the URL a Cloudflare Pages Function (or local worker) should
  * 302 to. Empty or invalid values fall back to the public Megapot origin
- * so a fresh deploy never ships a broken CTA.
+ * so a fresh deploy never ships a broken CTA. UTMs are always applied.
  */
 
-export const PUBLIC_PLAY_FALLBACK = 'https://megapot.io';
+import { withFactoryUtms } from './utm.ts';
+
+export const PUBLIC_PLAY_FALLBACK = withFactoryUtms('https://megapot.io');
 
 export type PlayRedirectEnv = {
   MEGAPOT_PLAY_DESTINATION?: string | undefined;
@@ -32,5 +34,5 @@ export function resolvePlayDestination(env: PlayRedirectEnv): string {
     return PUBLIC_PLAY_FALLBACK;
   }
 
-  return parsed.toString();
+  return withFactoryUtms(parsed.toString());
 }

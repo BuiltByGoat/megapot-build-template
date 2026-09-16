@@ -8,7 +8,8 @@ app/disclaimer/page.tsx — independence + 18+ note
 src/components/FactoryLanding.tsx — landing sections
 src/components/SiteHeader.tsx — factory nav
 src/components/SiteFooter.tsx — public footer (no secrets)
-src/lib/play-redirect.ts — MEGAPOT_PLAY_DESTINATION resolver
+src/lib/play-redirect.ts — MEGAPOT_PLAY_DESTINATION resolver + factory UTMs
+src/lib/utm.ts — hostname UTMs for Play / dashboard / /go
 src/lib/site.ts — public-safe labels and official Megapot origins
 src/styles/cribble.css — cribble tokens (green / ember / ice)
 src/styles/factory.css — factory chrome

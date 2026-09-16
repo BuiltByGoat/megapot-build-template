@@ -8,7 +8,12 @@ the Formal template in [BuiltByGoat/megapot-templates](https://github.com/BuiltB
 
 Play buttons are `<a href="/go">`. That path is a Pages Function. The
 function reads `MEGAPOT_PLAY_DESTINATION` from the host environment and
-302s. If the name is unset, visitors go to the public Megapot origin.
+302s, appending factory UTMs (`utm_source=megapot.build`,
+`utm_medium=builder`, `utm_campaign=build-factory-v1`). If the name is
+unset, visitors go to the public Megapot origin with the same UTMs.
+
+Direct Play / results hrefs on this page carry the same UTMs. They are
+campaign params, not referral codes.
 
 Do not put referral codes, wallets, or API tokens in `index.html`, the
 footer, or this README's badges.

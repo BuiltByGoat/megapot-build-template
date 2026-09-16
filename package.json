@@ -9,15 +9,16 @@
     "dev": "next dev",
     "prebuild": "node scripts/sync-starter.mjs",
     "build": "next build",
-    "postbuild": "node scripts/check-privacy.mjs",
+    "postbuild": "node scripts/check-privacy.mjs && node scripts/check-utms.mjs --generated",
     "start": "next start",
     "preview": "pnpm build && pnpm start",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint",
     "format": "biome format --write",
     "privacy": "node scripts/check-privacy.mjs",
-    "test": "node --experimental-strip-types --test src/lib/play-redirect.test.ts",
-    "check": "biome check && pnpm typecheck && pnpm test && pnpm privacy"
+    "utms": "node scripts/check-utms.mjs",
+    "test": "node --experimental-strip-types --test src/lib/play-redirect.test.ts src/lib/utm.test.ts",
+    "check": "biome check && pnpm typecheck && pnpm test && pnpm privacy && pnpm utms"
   },
   "dependencies": {
     "next": "^15.5.3",

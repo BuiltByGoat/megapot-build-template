@@ -1,27 +1,31 @@
 /**
- * cribble tokens — dark canvas, green / ember / ice accents.
- * Swap values here (or point at a published cribble package) without
- * touching layout. Marketing starter copies this file as-is.
+ * cribble tokens — kit SoT.
+ *   canvas  #000
+ *   green   #02fe01
+ *   ember   #ff6a1a
+ *   ice     #9bdcf5
+ * Marketing starter `templates/marketing/cribble.css` must keep the same
+ * four values. Derived surfaces stay near-black so the accents read.
  */
 
 :root {
-  --crib-bg: #07090b;
-  --crib-bg-elevated: #0c1014;
-  --crib-bg-card: #11171c;
+  --crib-bg: #000;
+  --crib-bg-elevated: #0a0a0a;
+  --crib-bg-card: #111;
   --crib-ink: #e7eee8;
   --crib-muted: #8d9890;
   --crib-faint: #5d6860;
-  --crib-line: #1c2620;
-  --crib-line-strong: #2a3830;
-  --crib-green: #3dcc7a;
-  --crib-green-ink: #04210f;
-  --crib-green-dim: #123322;
-  --crib-ember: #e07a3d;
-  --crib-ember-ink: #2a1206;
-  --crib-ember-dim: #3a2014;
-  --crib-ice: #7ec8d4;
-  --crib-ice-ink: #062026;
-  --crib-ice-dim: #163038;
+  --crib-line: #1a1a1a;
+  --crib-line-strong: #2a2a2a;
+  --crib-green: #02fe01;
+  --crib-green-ink: #000;
+  --crib-green-dim: #022801;
+  --crib-ember: #ff6a1a;
+  --crib-ember-ink: #000;
+  --crib-ember-dim: #3a1808;
+  --crib-ice: #9bdcf5;
+  --crib-ice-ink: #001018;
+  --crib-ice-dim: #0d2a36;
   --crib-danger: #e25b5b;
   --crib-radius: 14px;
   --crib-radius-sm: 8px;

@@ -55,11 +55,21 @@ pnpm build    # static export → out/  (Cloudflare Pages output)
 | Name | Public? | Role |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_NAME` | yes (label) | Factory title. Safe. Not attribution. |
-| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. Empty → `https://megapot.io`. |
+| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. Empty → public Megapot origin. `/go` always appends factory UTMs on the Location. |
 | `MEGAPOT_REFERRER_ADDRESS` | **no** | Reserved for a future on-chain app template. Unused by the marketing shell. |
 | `MEGAPOT_API_KEY` | **no** | Reserved for server-side Data API reads. Never prefix with `NEXT_PUBLIC_`. |
 
 See [`.env.example`](./.env.example). Do not put values in git.
+
+## Hostname UTMs
+
+Play, dashboard, and results hrefs — and every `/go` 302 — set:
+
+- `utm_source=megapot.build`
+- `utm_medium=builder`
+- `utm_campaign=build-factory-v1`
+
+These are campaign params, not referral codes. Do not add wallets or invite paths to public markup.
 
 ## Deploy shape (Cloudflare Pages)
 
