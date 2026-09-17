@@ -1,30 +1,45 @@
 # megapot.build
 
-**Developer** factory / explainer for the Megapot Network cloneable:
+Launch factory for the Megapot Network cloneable:
 [BuiltByGoat/network-site-template](https://github.com/BuiltByGoat/network-site-template)
 (`main`).
 
-This repo is the builder hub. It is **not** the site you clone. Clones ship a
-**player** marketing shell — public copy sells play; your referral destination
-stays in private host env (`MEGAPOT_PLAY_DESTINATION`).
+Anyone can ship a **player** marketing site — or follow the ticket-selling
+how-to — in two steps. This repo is the hub. It is **not** the site you clone.
+Public copy on clones sells play; your referral stays in private host env
+(`MEGAPOT_PLAY_DESTINATION`).
 
 Live player-shell preview: [network-site-template.pages.dev](https://network-site-template.pages.dev).
 
-## IA
+## Two steps
 
-1. **Picker** — clone `network-site-template` (player site, not a builder ad)
-2. **Configure** — bind `SITE_HOSTNAME` + `MEGAPOT_PLAY_DESTINATION` (your private referral destination)
-3. **Deploy** — Cloudflare Pages `out/` + Function-win `/go` (302 only)
+1. **Get your referral code** — register / open the [Megapot dashboard](https://megapot.io/dashboard)
+   and create an 8-character code (format hint `ABCD1234`, never a live sample).
+   That code attributes play from the site you launch.
+2. **Choose what to launch**
+   - **Marketing site (primary)** — player shell. Enter the code before Launch.
+     [Cloudflare Pages](https://deploy.workers.cloudflare.com/?url=https://github.com/BuiltByGoat/network-site-template)
+     is recommended; [Vercel](https://vercel.com/new/clone?repository-url=https://github.com/BuiltByGoat/network-site-template)
+     is secondary. Deeplinks inject `MEGAPOT_PLAY_DESTINATION` into private env
+     (hosted play URL path `/r/{CODE}`). Also: open the GitHub template after
+     the code is valid, then connect GitHub → set env names → deploy → smoke `/go`.
+   - **Ticket-selling site** — how-to only (no one-click dump). See
+     [docs/LAUNCH.md](./docs/LAUNCH.md). Reading it does not require a code;
+     create one before you go live.
 
 Cribble tokens only (`#000` / `#02fe01` / `#ff6a1a` / `#9bdcf5`).
+
+Factory Play (`/go`) is a secondary “Play Megapot” hop. It does not compete
+with Launch.
 
 ## Privacy
 
 Never display on a public page, footer, README badge, or marketing copy:
 
-- Referral codes
+- Referral codes (format hint `ABCD1234` is allowed)
 - Wallet addresses
 - API tokens or other secrets
+- `MEGAPOT_PLAY_DESTINATION` **values**
 
 Document **names** only. Values live on the host (Cloudflare Pages env) or in
 an uncommitted `.env.local`.
@@ -65,7 +80,7 @@ include `utm_source=megapot.build`.
 | `MEGAPOT_UTM_SOURCE` | **no** | Optional explicit `utm_source` if hostname envs are unset. |
 | `MEGAPOT_UTM_MEDIUM` | **no** | `utm_medium` override (factory default `builder`). |
 | `MEGAPOT_UTM_CAMPAIGN` | **no** | `utm_campaign` override (factory default `build-factory-v1`). |
-| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. Empty → public Megapot origin. |
+| `MEGAPOT_PLAY_DESTINATION` | **no** | Absolute URL the `/go` Function redirects to. On a clone: hosted `/r/{CODE}` play URL. Empty → public Megapot origin. |
 | `MEGAPOT_REFERRER_ADDRESS` | **no** | Reserved. Unused by the cloneable v1 shell. |
 | `MEGAPOT_API_KEY` | **no** | Reserved for server-side Data API reads. Never prefix with `NEXT_PUBLIC_`. |
 
@@ -83,8 +98,8 @@ Factory (this repo / Pages project `megapot-build`):
 
 Clones set their own deploy host. These are campaign params, not referral codes.
 
-Play is intent. Dashboard and latest results are public look-ups, not a signup
-flow.
+Play is intent. Dashboard is the door to create a referral code — not a Play
+signup flow. Latest results stay a public look-up.
 
 ## Pages project (Cloudflare)
 
@@ -119,14 +134,16 @@ GitHub stays `BuiltByGoat/megapot-build-template`.
 Custom-domain / apex attachment is DomainManager only. This README does not
 treat an apex hostname as live. Do not change NS/DNS for this fix.
 
-To ship a **player site**, clone
+To ship a **player site**, use the two-step flow on megapot.build (or clone
 [network-site-template](https://github.com/BuiltByGoat/network-site-template)
-instead of this factory. The clone's public homepage should sell play, not
-advertise builders. Bind the referral destination in private env.
+directly). The clone’s public homepage should sell play, not advertise
+builders. Bind the play destination in private env.
 
 ## Customize
 
 - Factory copy: `src/components/FactoryLanding.tsx`
+- Marketing launch gate: `src/components/MarketingLaunch.tsx`
+- Launch contract: [`docs/LAUNCH.md`](./docs/LAUNCH.md)
 - Tokens: `src/styles/cribble.css`
 - Official origins: `src/lib/origin.ts`
 

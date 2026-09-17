@@ -1,5 +1,5 @@
 /**
- * Growth SEO/IA: builder title, picker IA, SITE_HOSTNAME UTMs,
+ * Growth SEO/IA: builder title, two-step launch IA, SITE_HOSTNAME UTMs,
  * hub/results hosts, Function-win /go stays out of the index,
  * no apex DNS instructions.
  */
@@ -80,7 +80,7 @@ if (!statSync(outRoot, { throwIfNoEntry: false })?.isDirectory()) {
     }
   }
   if (!home.includes('application/ld+json')) {
-    findings.push('Landing must ship HowTo JSON-LD for picker → configure → deploy');
+    findings.push('Landing must ship HowTo JSON-LD for the two-step launch');
   }
   if (!home.includes(new URL(NETWORK_HUB_ORIGIN).hostname)) {
     findings.push('Landing must name the Network hub megapot.network');
@@ -91,14 +91,23 @@ if (!statSync(outRoot, { throwIfNoEntry: false })?.isDirectory()) {
   if (!home.includes('https://github.com/BuiltByGoat/network-site-template')) {
     findings.push('Landing must link the cloneable GitHub repo');
   }
-  if (!/developer factory/i.test(home)) {
-    findings.push('Landing must pitch megapot.build as a developer factory');
+  if (!/two steps/i.test(home)) {
+    findings.push('Landing must pitch a two-step launch');
+  }
+  if (!/referral code/i.test(home)) {
+    findings.push('Landing must tell visitors to get a referral code');
+  }
+  if (!/Cloudflare Pages/i.test(home)) {
+    findings.push('Landing must recommend Cloudflare Pages');
   }
   if (!/player (?:site|marketing shell|front door)/i.test(home)) {
     findings.push('Landing must say clones ship a player site');
   }
   if (!home.includes('MEGAPOT_PLAY_DESTINATION')) {
     findings.push('Landing must name the play destination env');
+  }
+  if (!home.includes('id="marketing"') || !home.includes('id="tickets"')) {
+    findings.push('Landing must expose marketing and tickets launch cards');
   }
   if (home.includes('utm_source=megapot.build') === false) {
     findings.push('HTML outbound hrefs must stamp utm_source=megapot.build');
@@ -165,4 +174,4 @@ if (findings.length) {
   process.exit(1);
 }
 
-process.stdout.write('SEO / IA check passed (title, picker IA, robots, sitemap, no apex DNS).\n');
+process.stdout.write('SEO / IA check passed (title, two-step IA, robots, sitemap, no apex DNS).\n');

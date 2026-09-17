@@ -1,10 +1,10 @@
 # Disclaimer
 
 megapot.build is an **Infrastructure Participant interface** — a community
-developer factory that helps builders clone
-[network-site-template](https://github.com/BuiltByGoat/network-site-template)
-and ship a player-facing site. It is **not** operated by, affiliated with, or
-endorsed by Megapot.
+factory that helps anyone launch a player-facing marketing site from
+[network-site-template](https://github.com/BuiltByGoat/network-site-template),
+or follow the ticket-selling how-to. It is **not** operated by, affiliated
+with, or endorsed by Megapot.
 
 By using this factory or a site cloned from the Network template you
 acknowledge that:

@@ -13,15 +13,11 @@ export function SiteHeader() {
         <span className="brand-dot" aria-hidden="true" />
         <span className="brand-mark">{SITE_NAME}</span>
       </a>
-      <nav className="nav" aria-label="Developer factory">
-        <a href="/#picker">Picker</a>
-        <a href="/#configure">Configure</a>
-        <a href="/#deploy">Deploy</a>
-        <a href={LINKS.cloneable} rel="noreferrer">
-          Clone
-        </a>
+      <nav className="nav" aria-label="Launch factory">
+        <a href="/#referral">Referral</a>
+        <a href="/#launch">Launch</a>
         <a href={LINKS.play} data-cta="play">
-          Play
+          Play Megapot
         </a>
       </nav>
     </header>
