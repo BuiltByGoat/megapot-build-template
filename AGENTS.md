@@ -31,11 +31,12 @@ Play is intent. Do not frame dashboard as signup.
 | `functions/go.js` | Cloudflare Pages Function for `/go` |
 | `functions/go/index.js` | Same handler for trailing-slash `/go/` |
 | `wrangler.toml` | Pages project name `megapot-build`; `[vars] SITE_HOSTNAME`; no `account_id` |
-| `scripts/write-pages-routes.ts` | Writes `out/_routes.json` (`include: ["/*"]`, static excludes) |
+| `scripts/write-pages-routes.ts` | Writes `out/_worker.js` + `out/_routes.json` (`include: ["/*"]`, static excludes) |
 | `scripts/check-privacy.mjs` | Scan for leaked addresses / invite tokens |
 
 Do not add `functions/go.ts` or a Next.js `app/go` page. A static `/go` 200
-wins over the Function. Do not publish apex DNS steps.
+wins over the Function. `out/_worker.js` is required so Direct Upload of
+`out/` still 302s. Do not publish apex DNS steps.
 
 ## Convention
 

@@ -1,6 +1,8 @@
 /**
  * ---
  * @customize  Function-win /go. Pages must not emit a static /go 200.
+ *             `out/_worker.js` ships the 302 inside the asset directory
+ *             so Direct Upload of `out/` still invokes the redirect.
  * ---
  */
 
@@ -12,6 +14,10 @@ export const GO_FUNCTION_PATHS = ['/go', '/go/'] as const;
 export const FORBIDDEN_GO_FUNCTION_FILES = ['functions/go.ts', 'functions/go/index.ts'];
 
 export const REQUIRED_GO_FUNCTION_FILES = ['functions/go.js', 'functions/go/index.js'];
+
+export const PAGES_WORKER_FILENAME = '_worker.js';
+
+const PAGES_META_FILES = new Set(['_routes.json', PAGES_WORKER_FILENAME]);
 
 const STATIC_GO_FILES = ['go.html', 'go.htm', 'go/index.html', 'go/index.htm'];
 
@@ -68,7 +74,7 @@ export function buildPagesRoutesJson(outRoot: string): {
 
   if (existsSync(outRoot) && statSync(outRoot).isDirectory()) {
     for (const entry of readdirSync(outRoot, { withFileTypes: true })) {
-      if (entry.name === '_routes.json' || entry.name === 'go') {
+      if (PAGES_META_FILES.has(entry.name) || entry.name === 'go') {
         continue;
       }
 
@@ -87,6 +93,47 @@ export function buildPagesRoutesJson(outRoot: string): {
     include: ['/*'],
     exclude: [...exclude].sort(),
   };
+}
+
+/**
+ * Advanced-mode Worker for the Pages output directory. File-based
+ * `functions/` lives at the repo root and is dropped when the host
+ * publishes only `out/`. `_worker.js` inside `out/` still 302s /go.
+ */
+export function buildPagesWorkerSource(goFunctionSource: string): string {
+  const trimmed = goFunctionSource.trim();
+  if (!trimmed.includes('export function onRequest')) {
+    throw new Error('functions/go.js must export onRequest so out/_worker.js can invoke it.');
+  }
+
+  return `${trimmed}
+
+export default {
+  async fetch(request, env, ctx) {
+    const pathname = new URL(request.url).pathname;
+    if (pathname === '/go' || pathname === '/go/') {
+      return onRequest({
+        request,
+        env,
+        waitUntil: ctx.waitUntil.bind(ctx),
+      });
+    }
+    return env.ASSETS.fetch(request);
+  },
+};
+`;
+}
+
+export function workerSourceForcesGoFunction(source: string): boolean {
+  return (
+    source.includes('export function onRequest') &&
+    source.includes('export default') &&
+    source.includes("pathname === '/go'") &&
+    source.includes("pathname === '/go/'") &&
+    source.includes('ASSETS.fetch') &&
+    source.includes('MEGAPOT_PLAY_DESTINATION') &&
+    source.includes('SITE_HOSTNAME')
+  );
 }
 
 export function routesJsonForcesGoFunction(value: unknown): boolean {

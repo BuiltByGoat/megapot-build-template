@@ -1,5 +1,6 @@
 name = "megapot-build"
 pages_build_output_dir = "out"
+compatibility_date = "2026-09-17"
 
 # Factory identity. Not a secret. Pages project `megapot-build` must also
 # bind SITE_HOSTNAME=megapot.build so Function Location matches HTML UTMs.

@@ -3,12 +3,16 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, it } from 'node:test';
+import { pathToFileURL } from 'node:url';
 import {
   buildPagesRoutesJson,
+  buildPagesWorkerSource,
   FORBIDDEN_GO_FUNCTION_FILES,
   findStaticGoArtifacts,
+  PAGES_WORKER_FILENAME,
   REQUIRED_GO_FUNCTION_FILES,
   routesJsonForcesGoFunction,
+  workerSourceForcesGoFunction,
 } from './go-routes.ts';
 import { DEFAULT_UTMS } from './utms.ts';
 
@@ -57,6 +61,8 @@ describe('Pages Function files', () => {
     assert.equal(/^\s*account_id\s*=/m.test(wrangler), false);
     assert.equal(wrangler.includes('name = "megapot-build"'), true);
     assert.equal(wrangler.includes('SITE_HOSTNAME = "megapot.build"'), true);
+    assert.equal(/^\s*compatibility_date\s*=/m.test(wrangler), true);
+    assert.equal(wrangler.includes('pages_build_output_dir = "out"'), true);
   });
 
   it('runs TypeScript check and postbuild scripts via tsx (Node 20-safe)', () => {
@@ -65,6 +71,8 @@ describe('Pages Function files', () => {
     assert.equal(scripts.includes('experimental-strip-types'), false);
     assert.equal(scripts.includes('tsx scripts/write-pages-routes.ts'), true);
     assert.equal(scripts.includes('tsx scripts/check-seo.mjs'), true);
+    assert.equal(scripts.includes('tsx scripts/check-go.mjs'), true);
+    assert.equal(typeof pkg.devDependencies?.wrangler === 'string', true);
     assert.equal(typeof pkg.engines?.node === 'string' && pkg.engines.node.includes('20'), true);
   });
 });
@@ -99,6 +107,7 @@ describe('routesJsonForcesGoFunction', () => {
     assert.equal(routes.exclude.includes('/favicon.svg'), true);
     assert.equal(routes.exclude.includes('/go'), false);
     assert.equal(routes.exclude.includes('/go/'), false);
+    assert.equal(routes.exclude.includes('/_worker.js'), false);
     assert.equal(routesJsonForcesGoFunction(routes), true);
 
     assert.equal(
@@ -117,5 +126,50 @@ describe('routesJsonForcesGoFunction', () => {
       }),
       false,
     );
+  });
+});
+
+describe('buildPagesWorkerSource', () => {
+  it('wraps functions/go.js as an advanced-mode Worker that 302s /go', async () => {
+    const goSource = readFileSync(path.join(process.cwd(), 'functions/go.js'), 'utf8');
+    const source = buildPagesWorkerSource(goSource);
+    assert.equal(workerSourceForcesGoFunction(source), true);
+
+    const root = mkdtempSync(path.join(tmpdir(), 'go-worker-'));
+    const file = path.join(root, PAGES_WORKER_FILENAME);
+    writeFileSync(file, source);
+
+    const mod = await import(pathToFileURL(file).href);
+    const env = {
+      SITE_HOSTNAME: 'megapot.build',
+      ASSETS: {
+        fetch: async () => new Response('static-home', { status: 200 }),
+      },
+    };
+    const ctx = { waitUntil() {} };
+
+    const go = await mod.default.fetch(new Request('https://megapot.build/go'), env, ctx);
+    assert.equal(go.status, 302);
+    const location = new URL(go.headers.get('location') ?? '');
+    assert.equal(location.origin, 'https://megapot.io');
+    assert.equal(location.searchParams.get('utm_source'), 'megapot.build');
+    assert.equal(location.searchParams.get('utm_medium'), DEFAULT_UTMS.utm_medium);
+    assert.equal(location.searchParams.get('utm_campaign'), DEFAULT_UTMS.utm_campaign);
+
+    const slash = await mod.default.fetch(new Request('https://megapot.build/go/'), env, ctx);
+    assert.equal(slash.status, 302);
+
+    const home = await mod.default.fetch(new Request('https://megapot.build/'), env, ctx);
+    assert.equal(home.status, 200);
+    assert.equal(await home.text(), 'static-home');
+  });
+
+  it('does not list _worker.js in _routes.json exclude', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'go-worker-meta-'));
+    writeFileSync(path.join(root, 'index.html'), '<html>home</html>');
+    writeFileSync(path.join(root, PAGES_WORKER_FILENAME), 'export default {}\n');
+    const routes = buildPagesRoutesJson(root);
+    assert.equal(routes.exclude.includes('/_worker.js'), false);
+    assert.deepEqual(routes.include, ['/*']);
   });
 });

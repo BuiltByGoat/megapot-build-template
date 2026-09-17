@@ -43,8 +43,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 `/go` is a Cloudflare Pages Function (`functions/go.js` +
 `functions/go/index.js`). `next dev` does not invoke it. After `pnpm build`,
-preview the Function-win export with `npx wrangler pages dev out` if you need
-the 302 locally.
+`out/_worker.js` is the Function that actually ships inside the asset
+directory (Direct Upload of `out/` otherwise 404s `/go`). Preview with
+`pnpm preview` (`wrangler pages dev out`).
 
 ```bash
 pnpm check    # lint + types + tests + privacy + UTMs + /go + SEO/IA
@@ -91,17 +92,19 @@ flow.
 Existing project name: **`megapot-build`** (personal Cloudflare account).
 GitHub stays `BuiltByGoat/megapot-build-template`.
 
-1. Keep the `megapot-build` Pages project. Git integration (not a lone `out/`
-   upload — Functions live in `functions/`).
+1. Keep the `megapot-build` Pages project. Git integration is preferred.
+   Direct Upload of `out/` also works: `pnpm build` writes `out/_worker.js`.
 2. Framework: **None** (or Next.js static). Build command: `pnpm install && pnpm build`. Output directory: `out`.
 3. Node 22 (see `.nvmrc`). `pnpm build` / `pnpm check` also run on Node 20.19.
-4. Pages picks up `functions/go.js` as `GET /go` and `functions/go/index.js` as
-   `GET /go/`. `out/_routes.json` includes `/*` and excludes only real static
-   assets. Never exclude `/go`.
+4. Pages Function-win `/go`: repo-root `functions/go.js` + `functions/go/index.js`
+   are the source. `pnpm build` also writes `out/_worker.js` (advanced mode) so a
+   publish of `out/` still 302s. `out/_routes.json` includes `/*`
+   and excludes only real static assets. Never exclude `/go`.
 5. Settings → Variables and Secrets → set `SITE_HOSTNAME=megapot.build` and
    `MEGAPOT_PLAY_DESTINATION`. Encrypt private values / keep them out of logs.
    `wrangler.toml` `[vars]` also sets `SITE_HOSTNAME` for local `pages dev`.
-   Do not add `account_id`.
+   Do not add `account_id`. Empty `MEGAPOT_PLAY_DESTINATION` falls back to the
+   public Megapot origin (`https://megapot.io`) plus hostname UTMs.
 6. View-source the landing: you should see `/go`, not the destination.
 
 Custom-domain / apex attachment is DomainManager only. This README does not

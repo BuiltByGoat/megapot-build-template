@@ -6,6 +6,10 @@ node_modules
 out
 tsconfig.tsbuildinfo
 
+# wrangler
+.wrangler
+.dev.vars
+
 # env
 .env
 .env.local
