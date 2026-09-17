@@ -6,11 +6,13 @@
  */
 
 import {
+  CLONEABLE_GENERATE,
   CLONEABLE_PREVIEW,
   CLONEABLE_REPO,
   DOCS_ORIGIN,
   FACTORY_REPO,
   NETWORK_HUB_ORIGIN,
+  PROTOCOL_DOC_PATHS,
   PROTOCOL_DOCS_ORIGIN,
   PUBLIC_MEGAPOT_ORIGIN,
   RESULTS_ORIGIN,
@@ -39,15 +41,25 @@ export function playOriginUrl(): string {
   return publicMegapotUrl('/');
 }
 
+export function protocolDocUrl(path: string): string {
+  return new URL(path, PROTOCOL_DOCS_ORIGIN).toString();
+}
+
 export const LINKS = {
   play: PLAY_HREF,
   playOrigin: playOriginUrl(),
   dashboard: dashboardUrl(),
   docs: DOCS_ORIGIN,
   protocolDocs: PROTOCOL_DOCS_ORIGIN,
+  protocolStartHere: protocolDocUrl(PROTOCOL_DOC_PATHS.startHere),
+  protocolShareAndEarn: protocolDocUrl(PROTOCOL_DOC_PATHS.shareAndEarn),
+  protocolAddToYourSite: protocolDocUrl(PROTOCOL_DOC_PATHS.addToYourSite),
+  protocolReferrals: protocolDocUrl(PROTOCOL_DOC_PATHS.referrals),
+  protocolHowToRefer: protocolDocUrl(PROTOCOL_DOC_PATHS.howToRefer),
   results: resultsUrl(),
   hub: hubUrl(),
   cloneable: CLONEABLE_REPO,
+  cloneableGenerate: CLONEABLE_GENERATE,
   cloneablePreview: CLONEABLE_PREVIEW,
   factoryRepo: FACTORY_REPO,
 } as const;

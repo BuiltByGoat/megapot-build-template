@@ -10,6 +10,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '../..');
 
 const publicSurfaces = [
   'src/components/FactoryLanding.tsx',
+  'src/components/MarketingLaunch.tsx',
   'src/components/SiteFooter.tsx',
   'src/components/SiteHeader.tsx',
   'src/components/FactoryJsonLd.tsx',

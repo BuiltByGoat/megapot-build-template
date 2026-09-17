@@ -5,19 +5,23 @@ app/page.tsx — factory landing
 app/disclaimer/page.tsx — independence + 18+ note
 app/robots.ts — allow pages; disallow /go (302 only)
 app/sitemap.ts — / and /disclaimer/ only
-src/components/FactoryLanding.tsx — developer factory; clones ship a player site; picker → configure → deploy
-src/components/FactoryJsonLd.tsx — HowTo JSON-LD
-src/components/SiteHeader.tsx — factory nav
+src/components/FactoryLanding.tsx — two-step launch factory; clones ship a player site
+src/components/MarketingLaunch.tsx — referral-gated Cloudflare / Vercel / template CTAs
+src/components/FactoryJsonLd.tsx — HowTo JSON-LD (referral → launch)
+src/components/SiteHeader.tsx — factory nav (Referral, Launch, Play)
 src/components/SiteFooter.tsx — public footer (hub → megapot.network)
+src/lib/referral.ts — 8-char code gate; play destination is /r/{CODE}
+src/lib/deploy.ts — Cloudflare + Vercel deeplinks; inject MEGAPOT_PLAY_DESTINATION privately
 src/lib/play-redirect.ts — MEGAPOT_PLAY_DESTINATION resolver + hostname UTMs
 src/lib/utms.ts — SITE_HOSTNAME → utm_source
 src/lib/origin.ts — official Megapot / Network / results origins
-src/lib/links.ts — /go, dashboard, results, hub, cloneable
+src/lib/links.ts — /go, dashboard, results, hub, cloneable, protocol docs
 src/lib/site.ts — Build on Megapot | {SITE_NAME}
 src/lib/seo.ts — canonical host, IA steps, robots/sitemap policy
 src/lib/go-routes.ts — Function-win _routes.json + out/_worker.js + static /go strip
 src/styles/cribble.css — cribble tokens (green / ember / ice)
 src/styles/factory.css — factory chrome
+docs/LAUNCH.md — two-step launch contract (humans + agents)
 functions/go.js — Cloudflare Pages Function for /go
 functions/go/index.js — trailing-slash /go/
 wrangler.toml — Pages project megapot-build; compatibility_date; SITE_HOSTNAME=megapot.build; no account_id

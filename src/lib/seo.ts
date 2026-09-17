@@ -13,12 +13,11 @@ import { FACTORY_HOSTNAME } from './utms.ts';
 export const FACTORY_CANONICAL_ORIGIN = `https://${FACTORY_HOSTNAME}`;
 
 export const FACTORY_DESCRIPTION =
-  'Developer factory for BuiltByGoat/network-site-template. You ship a player site; Play hops through /go. Picker → configure → deploy. Bind SITE_HOSTNAME=megapot.build so HTML and /go Location both stamp utm_source=megapot.build.';
+  'Launch a Megapot marketing or ticket site in two steps: get your referral code, then choose Cloudflare Pages or Vercel for a player marketing site (BuiltByGoat/network-site-template) — or follow the ticket how-to. Play hops through /go. Bind SITE_HOSTNAME=megapot.build so HTML and /go Location both stamp utm_source=megapot.build.';
 
 export const IA_STEPS = [
-  { id: 'picker', label: 'Picker', href: '/#picker' },
-  { id: 'configure', label: 'Configure', href: '/#configure' },
-  { id: 'deploy', label: 'Deploy', href: '/#deploy' },
+  { id: 'referral', label: 'Get your referral code', href: '/#referral' },
+  { id: 'launch', label: 'Choose what to launch', href: '/#launch' },
 ] as const;
 
 export const ROBOTS_DISALLOW = ['/go', '/go/'] as const;
@@ -44,7 +43,7 @@ export function factoryJsonLd(): Record<string, unknown> {
       },
       {
         '@type': 'HowTo',
-        name: 'Build a player-facing Megapot Network site',
+        name: 'Launch a player-facing Megapot site',
         description: FACTORY_DESCRIPTION,
         step: IA_STEPS.map((step, position) => ({
           '@type': 'HowToStep',

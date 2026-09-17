@@ -141,7 +141,7 @@ a {
 }
 
 .hero h1 {
-  max-width: 16ch;
+  max-width: 18ch;
   margin: 0 0 18px;
   font-size: clamp(2.7rem, 7vw, 5.1rem);
   font-weight: 650;
@@ -203,6 +203,13 @@ a {
 .btn-ember {
   background: var(--crib-ember);
   color: var(--crib-ember-ink);
+}
+
+.btn-disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.15);
 }
 
 .stat-row {
@@ -493,7 +500,155 @@ section .intro {
   color: var(--crib-ice);
 }
 
+.path-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.path-card {
+  padding: 22px 20px 20px;
+  border: 1px solid var(--crib-line);
+  border-radius: var(--crib-radius);
+  background: var(--crib-bg-card);
+}
+
+.path-card-primary {
+  border-color: color-mix(in srgb, var(--crib-green) 42%, var(--crib-line));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--crib-green) 18%, transparent);
+}
+
+.path-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  letter-spacing: -0.03em;
+}
+
+.path-card > p {
+  margin: 0 0 18px;
+  color: var(--crib-muted);
+  font-size: 0.95rem;
+}
+
+.field {
+  margin: 0 0 18px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.field-input {
+  width: min(100%, 16rem);
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--crib-line-strong);
+  border-radius: 12px;
+  background: var(--crib-bg-elevated);
+  color: var(--crib-ink);
+  font-family: var(--crib-mono);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.field-input:focus-visible {
+  outline: 2px solid var(--crib-green);
+  outline-offset: 2px;
+  border-color: var(--crib-green);
+}
+
+.field-reason {
+  margin: 10px 0 0;
+  color: var(--crib-muted);
+  font-size: 0.88rem;
+}
+
+.field-reason.ok {
+  color: var(--crib-green);
+}
+
+.checklist {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: check;
+}
+
+.checklist li {
+  position: relative;
+  padding: 12px 0 12px 42px;
+  border-top: 1px solid var(--crib-line);
+  color: var(--crib-muted);
+  counter-increment: check;
+}
+
+.checklist li::before {
+  content: counter(check);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--crib-line-strong);
+  border-radius: 99px;
+  color: var(--crib-ice);
+  font-family: var(--crib-mono);
+  font-size: 0.75rem;
+}
+
+.checklist b {
+  display: block;
+  color: var(--crib-ink);
+  margin-bottom: 2px;
+}
+
+.notes {
+  margin: 0;
+}
+
+.notes > div {
+  padding: 16px 0;
+  border-top: 1px solid var(--crib-line);
+}
+
+.notes dt {
+  margin: 0 0 6px;
+  color: var(--crib-ice);
+  font-family: var(--crib-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.notes dd {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--crib-muted);
+}
+
+.path-card a,
+.notes a {
+  color: var(--crib-ice);
+}
+
+.path-card code,
+.checklist code,
+.notes code,
+.field-reason code {
+  font-family: var(--crib-mono);
+  font-size: 0.86em;
+  color: var(--crib-ice);
+}
+
 @media (max-width: 820px) {
+  .path-grid,
   .template-panel {
     grid-template-columns: 1fr;
   }

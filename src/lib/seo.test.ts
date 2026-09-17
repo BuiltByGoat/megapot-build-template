@@ -16,14 +16,15 @@ import { documentTitle } from './site.ts';
 import { FACTORY_HOSTNAME } from './utms.ts';
 
 describe('factory SEO / IA', () => {
-  it('keeps a builder title and picker → configure → deploy IA', () => {
+  it('keeps a builder title and two-step launch IA', () => {
     assert.equal(documentTitle(FACTORY_HOSTNAME), 'Build on Megapot | megapot.build');
-    assert.equal(FACTORY_DESCRIPTION.includes('Picker → configure → deploy'), true);
-    assert.equal(FACTORY_DESCRIPTION.includes('Developer factory'), true);
-    assert.equal(FACTORY_DESCRIPTION.includes('player site'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('two steps'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('referral code'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('player marketing site'), true);
+    assert.equal(FACTORY_DESCRIPTION.includes('Cloudflare Pages'), true);
     assert.deepEqual(
       IA_STEPS.map((step) => step.id),
-      ['picker', 'configure', 'deploy'],
+      ['referral', 'launch'],
     );
   });
 
@@ -45,7 +46,7 @@ describe('factory SEO / IA', () => {
     assert.deepEqual([...ROBOTS_DISALLOW], ['/go', '/go/']);
   });
 
-  it('describes the three IA steps in JSON-LD', () => {
+  it('describes the two IA steps in JSON-LD', () => {
     const graph = factoryJsonLd();
     const encoded = JSON.stringify(graph);
     assert.equal(encoded.includes('HowTo'), true);

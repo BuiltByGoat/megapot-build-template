@@ -1,7 +1,7 @@
 /**
  * ---
- * @customize  Developer-factory HowTo JSON-LD. Picker → configure → deploy.
- *             Clones ship a player site.
+ * @customize  Two-step HowTo JSON-LD. Referral code, then launch
+ *             a player marketing site or read the ticket how-to.
  * ---
  */
 import { factoryJsonLd } from '@/lib/seo';
