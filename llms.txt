@@ -15,14 +15,14 @@ src/lib/origin.ts — official Megapot / Network / results origins
 src/lib/links.ts — /go, dashboard, results, hub, cloneable
 src/lib/site.ts — Build on Megapot | {SITE_NAME}
 src/lib/seo.ts — canonical host, IA steps, robots/sitemap policy
-src/lib/go-routes.ts — Function-win _routes.json + static /go strip
+src/lib/go-routes.ts — Function-win _routes.json + out/_worker.js + static /go strip
 src/styles/cribble.css — cribble tokens (green / ember / ice)
 src/styles/factory.css — factory chrome
 functions/go.js — Cloudflare Pages Function for /go
 functions/go/index.js — trailing-slash /go/
-wrangler.toml — Pages project megapot-build; SITE_HOSTNAME=megapot.build; no account_id
-scripts/write-pages-routes.ts — write out/_routes.json after next build (tsx; Node 20+)
+wrangler.toml — Pages project megapot-build; compatibility_date; SITE_HOSTNAME=megapot.build; no account_id
+scripts/write-pages-routes.ts — write out/_routes.json + out/_worker.js after next build (tsx; Node 20+)
 scripts/check-privacy.mjs — fail on addresses / invite tokens
 scripts/check-utms.mjs — hostname UTMs + cribble SoT
-scripts/check-go.mjs — Function-win /go shape
+scripts/check-go.mjs — Function-win /go shape + live wrangler 302
 scripts/check-seo.mjs — title / IA / robots / sitemap / no apex DNS

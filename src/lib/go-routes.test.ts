@@ -7,6 +7,8 @@ import {
   buildPagesRoutesJson,
   FORBIDDEN_GO_FUNCTION_FILES,
   findStaticGoArtifacts,
+  GO_WORKER_FILENAME,
+  generateGoWorker,
   REQUIRED_GO_FUNCTION_FILES,
   routesJsonForcesGoFunction,
 } from './go-routes.ts';
@@ -57,6 +59,8 @@ describe('Pages Function files', () => {
     assert.equal(/^\s*account_id\s*=/m.test(wrangler), false);
     assert.equal(wrangler.includes('name = "megapot-build"'), true);
     assert.equal(wrangler.includes('SITE_HOSTNAME = "megapot.build"'), true);
+    assert.equal(/^\s*compatibility_date\s*=/m.test(wrangler), true);
+    assert.equal(wrangler.includes('pages_build_output_dir = "out"'), true);
   });
 
   it('runs TypeScript check and postbuild scripts via tsx (Node 20-safe)', () => {
@@ -65,6 +69,8 @@ describe('Pages Function files', () => {
     assert.equal(scripts.includes('experimental-strip-types'), false);
     assert.equal(scripts.includes('tsx scripts/write-pages-routes.ts'), true);
     assert.equal(scripts.includes('tsx scripts/check-seo.mjs'), true);
+    assert.equal(scripts.includes('wrangler pages dev out'), true);
+    assert.equal(typeof pkg.devDependencies?.wrangler === 'string', true);
     assert.equal(typeof pkg.engines?.node === 'string' && pkg.engines.node.includes('20'), true);
   });
 });
@@ -117,5 +123,27 @@ describe('routesJsonForcesGoFunction', () => {
       }),
       false,
     );
+  });
+
+  it('does not exclude advanced-mode _worker.js as if it were /go', () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'go-worker-'));
+    writeFileSync(path.join(root, 'index.html'), '<html>home</html>');
+    writeFileSync(path.join(root, GO_WORKER_FILENAME), 'export default {}');
+    const routes = buildPagesRoutesJson(root);
+    assert.equal(routes.exclude.includes('/_worker.js'), false);
+    assert.equal(routesJsonForcesGoFunction(routes), true);
+  });
+});
+
+describe('generateGoWorker', () => {
+  it('reuses onRequest so Direct Upload of out/ still 302s /go', () => {
+    const source = readFileSync(path.join(process.cwd(), 'functions/go.js'), 'utf8');
+    const worker = generateGoWorker(source);
+    assert.equal(worker.includes('export function onRequest'), true);
+    assert.equal(worker.includes('export default'), true);
+    assert.equal(worker.includes("url.pathname === '/go'"), true);
+    assert.equal(worker.includes("url.pathname === '/go/'"), true);
+    assert.equal(worker.includes('env.ASSETS.fetch(request)'), true);
+    assert.equal(worker.includes("from '"), false);
   });
 });

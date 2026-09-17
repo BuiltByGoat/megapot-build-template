@@ -1,6 +1,7 @@
 /**
  * ---
  * @customize  Function-win /go. Pages must not emit a static /go 200.
+ *             out/_worker.js covers Direct Upload; functions/go.js is SoT.
  * ---
  */
 
@@ -12,6 +13,8 @@ export const GO_FUNCTION_PATHS = ['/go', '/go/'] as const;
 export const FORBIDDEN_GO_FUNCTION_FILES = ['functions/go.ts', 'functions/go/index.ts'];
 
 export const REQUIRED_GO_FUNCTION_FILES = ['functions/go.js', 'functions/go/index.js'];
+
+export const GO_WORKER_FILENAME = '_worker.js';
 
 const STATIC_GO_FILES = ['go.html', 'go.htm', 'go/index.html', 'go/index.htm'];
 
@@ -59,6 +62,32 @@ export function stripStaticGoArtifacts(root: string): string[] {
   return artifacts;
 }
 
+/**
+ * Pages advanced-mode Module Worker for Direct Upload of `out/`.
+ * Dashboard zip/upload of the output dir ignores repo-root `functions/`.
+ * `_worker.js` in the asset directory is what actually 302s /go there.
+ * Git + Wrangler deploys that include this file also use advanced mode
+ * (file-based `functions/` is ignored) — same redirect either way.
+ */
+export function generateGoWorker(goFunctionSource: string): string {
+  if (!goFunctionSource.includes('export function onRequest')) {
+    throw new Error('functions/go.js must export onRequest so out/_worker.js can reuse it.');
+  }
+
+  return `${goFunctionSource.trim()}
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname === '/go' || url.pathname === '/go/') {
+      return onRequest({ request, env });
+    }
+    return env.ASSETS.fetch(request);
+  },
+};
+`;
+}
+
 export function buildPagesRoutesJson(outRoot: string): {
   version: 1;
   include: string[];
@@ -68,7 +97,11 @@ export function buildPagesRoutesJson(outRoot: string): {
 
   if (existsSync(outRoot) && statSync(outRoot).isDirectory()) {
     for (const entry of readdirSync(outRoot, { withFileTypes: true })) {
-      if (entry.name === '_routes.json' || entry.name === 'go') {
+      if (
+        entry.name === '_routes.json' ||
+        entry.name === 'go' ||
+        entry.name === GO_WORKER_FILENAME
+      ) {
         continue;
       }
 
