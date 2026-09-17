@@ -43,12 +43,12 @@ Open [http://localhost:3000](http://localhost:3000).
 
 `/go` is a Cloudflare Pages Function (`functions/go.js` +
 `functions/go/index.js`). `next dev` does not invoke it. After `pnpm build`,
-preview the Function-win export with `npx wrangler pages dev out` if you need
-the 302 locally.
+`pnpm preview` (`wrangler pages dev out`) is the local 302.
 
 ```bash
-pnpm check    # lint + types + tests + privacy + UTMs + /go + SEO/IA
-pnpm build    # static export → out/  (writes out/_routes.json)
+pnpm check    # lint + types + tests + privacy + UTMs + live /go 302 + SEO/IA
+pnpm build    # static export → out/  (writes out/_routes.json + out/_worker.js)
+pnpm preview  # wrangler pages dev out — Function-win /go
 ```
 
 `pnpm build` sets `SITE_HOSTNAME=megapot.build` unless the environment already
@@ -91,21 +91,33 @@ flow.
 Existing project name: **`megapot-build`** (personal Cloudflare account).
 GitHub stays `BuiltByGoat/megapot-build-template`.
 
-1. Keep the `megapot-build` Pages project. Git integration (not a lone `out/`
-   upload — Functions live in `functions/`).
-2. Framework: **None** (or Next.js static). Build command: `pnpm install && pnpm build`. Output directory: `out`.
+1. Keep the `megapot-build` Pages project. Prefer Git integration. A dashboard
+   zip of `out/` alone used to drop `functions/`; `pnpm build` now writes
+   `out/_worker.js` so that path 302s too. Still prefer Git so env + Functions
+   stay together.
+2. Framework: **None** or **Next.js (Static HTML Export)** — never Next.js SSR
+   / `@cloudflare/next-on-pages`. Build command: `pnpm install && pnpm build`.
+   Output directory: `out`.
 3. Node 22 (see `.nvmrc`). `pnpm build` / `pnpm check` also run on Node 20.19.
-4. Pages picks up `functions/go.js` as `GET /go` and `functions/go/index.js` as
-   `GET /go/`. `out/_routes.json` includes `/*` and excludes only real static
-   assets. Never exclude `/go`.
+4. `wrangler.toml` must keep `compatibility_date` plus `pages_build_output_dir = "out"`.
+   Without the date, Wrangler ships static `out/` (Next `404.html`) and GET `/go`
+   is a 404 instead of a Function 302. `functions/go.js` is `GET /go`;
+   `functions/go/index.js` is `GET /go/`. `out/_routes.json` includes `/*` and
+   excludes only real static assets. Never exclude `/go`.
 5. Settings → Variables and Secrets → set `SITE_HOSTNAME=megapot.build` and
-   `MEGAPOT_PLAY_DESTINATION`. Encrypt private values / keep them out of logs.
-   `wrangler.toml` `[vars]` also sets `SITE_HOSTNAME` for local `pages dev`.
-   Do not add `account_id`.
-6. View-source the landing: you should see `/go`, not the destination.
+   `MEGAPOT_PLAY_DESTINATION` (Production **and** Preview). Encrypt the
+   destination / keep it out of logs. `wrangler.toml` `[vars]` also sets
+   `SITE_HOSTNAME` for local `pages dev`. Do not add `account_id`. Do not put
+   the destination in git.
+6. After DomainManager redeploys, smoke on **pages.dev first** (not DNS):
+   `curl -sI https://megapot-build.pages.dev/go` and `/go/` must be **HTTP 302**
+   with `Location` containing `utm_source=megapot.build`, `utm_medium=builder`,
+   `utm_campaign=build-factory-v1` (unless those names are overridden in env).
+   A 404 HTML title `404: This page could not be found.` means the Function
+   still did not win. View-source the landing: `/go`, never the destination.
 
 Custom-domain / apex attachment is DomainManager only. This README does not
-treat an apex hostname as live.
+treat an apex hostname as live. Do not change NS/DNS for this fix.
 
 To ship a **player site**, clone
 [network-site-template](https://github.com/BuiltByGoat/network-site-template)

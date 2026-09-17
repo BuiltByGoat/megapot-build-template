@@ -30,8 +30,8 @@ Play is intent. Do not frame dashboard as signup.
 | `src/lib/seo.ts` | Canonical host, IA steps, robots/sitemap policy |
 | `functions/go.js` | Cloudflare Pages Function for `/go` |
 | `functions/go/index.js` | Same handler for trailing-slash `/go/` |
-| `wrangler.toml` | Pages project name `megapot-build`; `[vars] SITE_HOSTNAME`; no `account_id` |
-| `scripts/write-pages-routes.ts` | Writes `out/_routes.json` (`include: ["/*"]`, static excludes) |
+| `wrangler.toml` | Pages project name `megapot-build`; `compatibility_date`; `[vars] SITE_HOSTNAME`; no `account_id` |
+| `scripts/write-pages-routes.ts` | Writes `out/_routes.json` (`include: ["/*"]`, static excludes) + `out/_worker.js` |
 | `scripts/check-privacy.mjs` | Scan for leaked addresses / invite tokens |
 
 Do not add `functions/go.ts` or a Next.js `app/go` page. A static `/go` 200

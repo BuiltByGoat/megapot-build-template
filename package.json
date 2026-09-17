@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "SITE_HOSTNAME=${SITE_HOSTNAME:-megapot.build} next build && tsx scripts/write-pages-routes.ts",
+    "preview": "wrangler pages dev out",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint",
@@ -29,9 +30,16 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tsx": "^4.23.13",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "wrangler": "^4.133.0"
   },
   "engines": {
     "node": ">=20.19"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ]
   }
 }
