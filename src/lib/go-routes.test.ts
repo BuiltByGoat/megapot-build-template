@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, it } from 'node:test';
+import { pathToFileURL } from 'node:url';
 import {
   buildPagesRoutesJson,
   FORBIDDEN_GO_FUNCTION_FILES,
@@ -12,7 +13,15 @@ import {
   REQUIRED_GO_FUNCTION_FILES,
   routesJsonForcesGoFunction,
 } from './go-routes.ts';
-import { DEFAULT_UTMS } from './utms.ts';
+import { DEFAULT_UTMS, FACTORY_HOSTNAME } from './utms.ts';
+
+type GoHandler = (context: { env?: Record<string, unknown>; request?: Request }) => Response;
+
+async function loadGoHandler(): Promise<GoHandler> {
+  const href = pathToFileURL(path.join(process.cwd(), 'functions/go.js')).href;
+  const mod = (await import(href)) as { onRequestGet: GoHandler };
+  return mod.onRequestGet;
+}
 
 describe('Next must not export a static /go page', () => {
   it('has no app/go or src/app/go route that would 200', () => {
@@ -47,6 +56,8 @@ describe('Pages Function files', () => {
     assert.equal(goSource.includes('MEGAPOT_UTM_CAMPAIGN'), true);
     assert.equal(goSource.includes('hostnameToUtmSource'), true);
     assert.equal(goSource.includes('resolveUtms'), true);
+    assert.equal(goSource.includes('GO_HITS'), true);
+    assert.equal(goSource.includes('writeDataPoint'), true);
     assert.equal(goSource.includes(DEFAULT_UTMS.utm_medium), true);
     assert.equal(goSource.includes(DEFAULT_UTMS.utm_campaign), true);
     assert.equal(/utm_source:\s*['"]network-site-template['"]/.test(goSource), false);
@@ -61,6 +72,9 @@ describe('Pages Function files', () => {
     assert.equal(wrangler.includes('SITE_HOSTNAME = "megapot.build"'), true);
     assert.equal(/^\s*compatibility_date\s*=/m.test(wrangler), true);
     assert.equal(wrangler.includes('pages_build_output_dir = "out"'), true);
+    assert.equal(wrangler.includes('[[analytics_engine_datasets]]'), true);
+    assert.equal(wrangler.includes('binding = "GO_HITS"'), true);
+    assert.equal(wrangler.includes('dataset = "network_go_hits"'), true);
   });
 
   it('runs TypeScript check and postbuild scripts via tsx (Node 20-safe)', () => {
@@ -144,6 +158,87 @@ describe('generateGoWorker', () => {
     assert.equal(worker.includes("url.pathname === '/go'"), true);
     assert.equal(worker.includes("url.pathname === '/go/'"), true);
     assert.equal(worker.includes('env.ASSETS.fetch(request)'), true);
+    assert.equal(worker.includes('writeDataPoint'), true);
+    assert.equal(worker.includes('GO_HITS'), true);
     assert.equal(worker.includes("from '"), false);
+  });
+});
+
+describe('/go Analytics Engine write', () => {
+  it('writes hostname + medium + campaign + path + 302 and still redirects', async () => {
+    const onRequestGet = await loadGoHandler();
+
+    const points: unknown[] = [];
+    const env = {
+      SITE_HOSTNAME: FACTORY_HOSTNAME,
+      GO_HITS: {
+        writeDataPoint(point: unknown) {
+          points.push(point);
+        },
+      },
+    };
+
+    const slash = onRequestGet({
+      env,
+      request: new Request(`https://${FACTORY_HOSTNAME}/go/`),
+    });
+    const bare = onRequestGet({
+      env,
+      request: new Request(`https://${FACTORY_HOSTNAME}/go`),
+    });
+
+    assert.equal(slash.status, 302);
+    assert.equal(bare.status, 302);
+    assert.deepEqual(points, [
+      {
+        indexes: [FACTORY_HOSTNAME],
+        blobs: [DEFAULT_UTMS.utm_medium, DEFAULT_UTMS.utm_campaign, '/go/', '302'],
+        doubles: [1],
+      },
+      {
+        indexes: [FACTORY_HOSTNAME],
+        blobs: [DEFAULT_UTMS.utm_medium, DEFAULT_UTMS.utm_campaign, '/go', '302'],
+        doubles: [1],
+      },
+    ]);
+  });
+
+  it('still 302s when GO_HITS is missing or writeDataPoint throws', async () => {
+    const onRequestGet = await loadGoHandler();
+
+    const missing = onRequestGet({
+      env: { SITE_HOSTNAME: FACTORY_HOSTNAME },
+      request: new Request(`https://${FACTORY_HOSTNAME}/go`),
+    });
+    const exploding = onRequestGet({
+      env: {
+        SITE_HOSTNAME: FACTORY_HOSTNAME,
+        GO_HITS: {
+          writeDataPoint() {
+            throw new Error('analytics unavailable');
+          },
+        },
+      },
+      request: new Request(`https://${FACTORY_HOSTNAME}/go`),
+    });
+
+    assert.equal(missing.status, 302);
+    assert.equal(exploding.status, 302);
+  });
+
+  it('does not write wallets, referral codes, Location, IPs, or cookies', () => {
+    const goSource = readFileSync(path.join(process.cwd(), 'functions/go.js'), 'utf8');
+    const writeBlock = goSource.slice(
+      goSource.indexOf('if (env.GO_HITS)'),
+      goSource.indexOf('return Response.redirect'),
+    );
+
+    assert.equal(writeBlock.includes('writeDataPoint'), true);
+    assert.equal(writeBlock.includes('location'), false);
+    assert.equal(writeBlock.includes('MEGAPOT_PLAY_DESTINATION'), false);
+    assert.equal(writeBlock.includes('cookie'), false);
+    assert.equal(writeBlock.includes('cf-connecting-ip'), false);
+    assert.equal(writeBlock.includes('wallet'), false);
+    assert.equal(writeBlock.includes('referral'), false);
   });
 });

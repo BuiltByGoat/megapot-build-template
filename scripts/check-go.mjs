@@ -49,6 +49,13 @@ if (!/^\s*compatibility_date\s*=/m.test(wrangler)) {
     'wrangler.toml must set compatibility_date. pages_build_output_dir without it ships static out/ and /go 404s.',
   );
 }
+if (
+  !wrangler.includes('[[analytics_engine_datasets]]') ||
+  !wrangler.includes('binding = "GO_HITS"') ||
+  !wrangler.includes('dataset = "network_go_hits"')
+) {
+  fail('wrangler.toml must bind Analytics Engine GO_HITS to dataset network_go_hits.');
+}
 
 const go = readFileSync(path.resolve(process.cwd(), 'functions/go.js'), 'utf8');
 const slash = readFileSync(path.resolve(process.cwd(), 'functions/go/index.js'), 'utf8');
@@ -90,6 +97,9 @@ const worker = readFileSync(workerPath, 'utf8');
 if (!worker.includes('export default') || !worker.includes('/go/')) {
   fail(`${workerPath} must be a Module Worker that 302s /go and /go/.`);
 }
+if (!worker.includes('writeDataPoint') || !worker.includes('GO_HITS')) {
+  fail(`${workerPath} must write GO_HITS Analytics Engine points before the /go 302.`);
+}
 
 const { onRequestGet } = await import('../functions/go.js');
 const handlerResponse = onRequestGet({
@@ -102,6 +112,35 @@ if (handlerResponse.status !== 302) {
 const handlerLocation = handlerResponse.headers.get('location');
 if (!handlerLocation || !locationHasDefaultUtms(handlerLocation, LIVE_UTMS)) {
   fail(`functions/go.js Location must stamp factory UTMs, got ${handlerLocation}`);
+}
+
+const written = [];
+const hitResponse = onRequestGet({
+  env: {
+    SITE_HOSTNAME: FACTORY_HOSTNAME,
+    GO_HITS: {
+      writeDataPoint(point) {
+        written.push(point);
+      },
+    },
+  },
+  request: new Request(`https://${FACTORY_HOSTNAME}/go/`),
+});
+if (hitResponse.status !== 302) {
+  fail(`functions/go.js must still 302 when GO_HITS writes, got ${hitResponse.status}.`);
+}
+if (
+  written.length !== 1 ||
+  JSON.stringify(written[0]) !==
+    JSON.stringify({
+      indexes: [FACTORY_HOSTNAME],
+      blobs: [DEFAULT_UTMS.utm_medium, DEFAULT_UTMS.utm_campaign, '/go/', '302'],
+      doubles: [1],
+    })
+) {
+  fail(
+    `functions/go.js must write GO_HITS hostname/medium/campaign/path/302, got ${JSON.stringify(written)}`,
+  );
 }
 
 async function waitForReady(child) {
