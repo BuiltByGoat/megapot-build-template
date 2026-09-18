@@ -10,3 +10,9 @@ compatibility_date = "2026-09-16"
 # Do not bind a Cloudflare account identifier here.
 [vars]
 SITE_HOSTNAME = "megapot.build"
+
+# /go hit counts. Dataset is not a secret. Writes hostname + UTM medium/
+# campaign + path + status only — never wallets, codes, Location, IPs, or cookies.
+[[analytics_engine_datasets]]
+binding = "GO_HITS"
+dataset = "network_go_hits"

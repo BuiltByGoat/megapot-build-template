@@ -85,7 +85,24 @@ function withUtms(url, utms) {
 
 function handleGo(context) {
   const env = context.env ?? {};
-  const location = withUtms(resolvePlayDestination(env.MEGAPOT_PLAY_DESTINATION), resolveUtms(env));
+  const utms = resolveUtms(env);
+  const location = withUtms(resolvePlayDestination(env.MEGAPOT_PLAY_DESTINATION), utms);
+
+  try {
+    if (env.GO_HITS) {
+      const hostname = hostnameToUtmSource(env.SITE_HOSTNAME) ?? '';
+      const medium = utms.utm_medium;
+      const campaign = utms.utm_campaign;
+      const requestUrl = context.request?.url;
+      const path = requestUrl && new URL(requestUrl).pathname === '/go/' ? '/go/' : '/go';
+      env.GO_HITS.writeDataPoint({
+        indexes: [hostname],
+        blobs: [medium, campaign, path, '302'],
+        doubles: [1],
+      });
+    }
+  } catch (_) {}
+
   return Response.redirect(location, 302);
 }
 
